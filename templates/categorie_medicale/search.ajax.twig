@@ -1,0 +1,7 @@
+{% if results is defined and results is iterable and results|length >= 1 %}
+    {% for result in results %}
+        <p style="display:inline-block;width:200px;">{{ result.id}}</p>
+        <p style="display:inline-block;width:100px;">{{ result.nom }}</p>
+
+    {% endfor %}
+{% endif %}

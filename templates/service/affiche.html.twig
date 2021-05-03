@@ -1,0 +1,115 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block contentHeader %} Services {% endblock %}
+{% block js %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $( document ).ready(function() {
+            var currentRequest = null;
+            $("#search").keyup(function(e){
+
+                var value = $(this).val();
+                if(currentRequest != null) {
+                    currentRequest.abort();
+                }
+
+                currentRequest = $.ajax({
+
+                    url : "{{ path('searchService') }}",
+                    type : 'GET',
+                    data: {
+                        'searchValue' : value
+                    },
+
+                    success : function(retour)
+                    {
+                        $('#all').html(retour);
+
+                    },
+                });
+                return false;
+            });
+        });
+        $( document ).ready(function() {
+            var currentRequest = null;
+            $("#categorie").change(function(){
+                var value = null;
+                $( "select option:selected" ).each(function() {
+                    value = $( this ).val() ;
+                });
+                if(currentRequest != null) {
+                    currentRequest.abort();
+                }
+
+                currentRequest = $.ajax({
+
+                    url : "{{ path('searchServicecat') }}",
+                    type : 'GET',
+                    data: {
+                        'searchValue' : value
+                    },
+
+                    success : function(retour)
+                    {
+                        $('#all').html(retour);
+
+                    },
+                });
+                return false;
+            });
+        });
+    </script>
+{% endblock  %}
+{%  block contentMain  %}
+    <section class="content">
+        <!-- Default box -->
+        <div class="card card-solid" >
+            <div class="card-header">
+                <a class="btn bg-gradient-info float-left " href="{{ path('Ajouterservice') }}">
+                    <i class="far fa-plus-square "> ajouter
+                    </i>
+
+                </a>
+
+                <div class="card-tools row">
+                    <div class="input-group input-group-sm col-md-6">
+                        <select class="form-control form-control-sm" id="categorie" >
+                            <option selected>filtre par Catégorie</option>
+                            {% for categorie in categories %}
+                                <option value="{{ categorie.id }}">{{ categorie.libelle }}</option>
+                            {% endfor %}
+
+                        </select>
+                    </div>
+
+
+                    <div class="input-group input-group-sm col-md-6" style="width: 150px;">
+                        <input  type="search" id="search" class="form-control " placeholder="Search">
+
+                        <div class="input-group-append">
+                            <a path="{{ path('searchService') }}" class="btn btn-default"><i class="fas fa-search"></i></a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="card-body pb-0">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 " id="all">
+                      {% include 'service/searchA.html.twig' %}
+                     </div>
+                </div>
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+                <div class="pagination">
+            {#{{ knp_pagination_render(services) }}#}
+        </div>
+            </div>
+            <!-- /.card-footer -->
+        </div>
+        <!-- /.card -->
+
+    </section>
+
+{% endblock %}

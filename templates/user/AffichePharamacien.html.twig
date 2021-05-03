@@ -1,0 +1,86 @@
+{% extends 'baseBack.html.twig' %}
+
+            {% block js %}
+
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                <script>
+                    $( document ).ready(function() {
+                        var currentRequest = null;
+                        $("#search").keyup(function(e){
+
+                            var value = $(this).val();
+                            if(currentRequest != null) {
+                                currentRequest.abort();
+                            }
+
+                            currentRequest = $.ajax({
+
+                                url : "{{ path('AffichePharmacienajax') }}",
+                                type : 'GET',
+                                data: {
+                                    'searchValue' : value
+                                },
+
+                                success : function(retour)
+                                {
+                                    $('#all').html(retour);
+
+                                },
+                            });
+                            return false;
+                        });
+                    });
+                </script>
+            {% endblock  %}
+
+
+
+
+
+
+            {% block contentMain %}
+<body>
+    <h1> Liste des Pharamaciens</h1>
+    <div class="card-body" class="col-lg-6">
+        <div class="d-flex align-items-center">
+            <input id="search" class="form-control mr-sm-2" type="text" name="search" placeholder="Search ..." aria-label="Search"  style="margin-bottom: 30px">
+            <a  href="{{ path('AffichePharmacien') }}"><i class="fa fa-sort"></i></a>
+        </div>
+
+        <br><br>
+        <div class="card-body">
+        <table id="demo-foo-addrow" class="table m-t-30 table-hover contact-list" data-page-size="10">
+            <thead> <tr>
+
+                <th>id</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+               {# <th>Date de naissance</th>#}
+                <th>Email</th>
+                {#<th>Mot de passe</th>#}
+                <th>Rôles</th>
+           {#     <th>Adresse</th>
+                <th>NumTel</th>#}
+               {# <th>Crecto</th>
+                <th>Cverso</th>#}
+                {# <th>Societe</th>#}
+               {# <th>Matricule</th>
+                <th>Cnam</th>
+                <th>Cnss</th>#}
+                <th>Attribuer Role</th>
+                <th>Detail</th>
+                <th>Supprimer</th>
+
+
+            </tr></thead>
+
+            <tbody id="all">
+            {% include 'user/PharmacienAjaxBack.html.twig' %}
+            </tbody>
+
+        </table>
+
+    </div>
+    </div>
+
+{% endblock %}

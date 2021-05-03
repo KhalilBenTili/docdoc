@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="ml-shopbar ml-shopbar--white">
+        <div class="ml-container">
+            <div class="row">
+                <div class="ml-shopbar__item">
+                    <p class="ml-shopbar__title">SHOP THE SALE</p>
+                </div><!--/.ml-shopbar__item-->
+            </div><!--/.row-->
+        </div><!--/.ml-container-->
+    </div>
+    <div class="ml-container ml-singleProduct">
+        <div class="row">
+            <div class="col-md-6 col-sm-6">
+                <div class="row">
+                    <div class="col-sm-10 col-md-10">
+                        <div class="ml-shopSlider slick-initialized slick-slider">
+                            <div class="slick-list draggable">
+                                {% for image in produit.images %}
+                                    <div class="slick-track" style="opacity: 1; width: 1770px;"><div class="ml-shopSlider__item slick-slide slick-current slick-active" data-slick-index="0" aria-hidden="false" tabindex="0" style="width: 295px; position: relative; left: 0px; top: 0px; z-index: 999; opacity: 1;">
+                                            <img  src="{{ asset ('/uploads/images/' ~ image.nom ) }}"
+                                                  class="ml-product__img" style=" height:300px "
+                                                  alt="image" >
+                                            <br>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div><!--/.ml-shopSlider-->
+                    </div><!--/.col-sm-10 col-md-10-->
+                </div><!--/.row-->
+            </div><!--/.col-sm-6 col-md-6-->
+            <div class="col-md-6 col-sm-6 ml-productInfo">
+                <div class="row">
+                    <div class="col-md-9 col-sm-9">
+                        <h3 class="ml-productInfo__title">{{ produit.nom }}</h3>
+                        <h3 class="ml-productInfo__Price">{{ produit.prix }} DT</h3>
+                    </div><!--/.col-md-9 col-sm-9-->
+                    <div class="col-md-12 col-sm-12">
+                        <div class="ml-separator--style3"></div>
+                        <p class="ml-productInfo__text">{{ produit.description }}</p>
+                        {% if app.user.type == 'medecin' or app.user.type == 'pharmacien' %}
+                        <form action="#" class="ml-form" method="get">
+                            <div class="ml-form-component">
+                                <div class="ml-separator--style3"></div>
+                                <a href="{{ path('panier_add',{'id':produit.id} )}}" class="btn ml-product__addToCart ml-product__addToCart--style2"><span class="ml-icon-shopping-cart2"></span><span class="hg__addToCartText">AJOUTER AU PANIER</span></a>
+                            </div><!--/.ml-form-component-->
+                        </form><!--/.ml-form-->
+                        {% endif %}
+                    </div><!--/.col-md-12 col-sm-12-->
+                </div><!--/.row-->
+            </div><!--/.ml-productInfo-->
+        </div><!--/.row"-->
+    </div>
+    <a href="{{ path('afficheProduit') }}" class="btn btn-success float-right">Liste produits</a>
+{% endblock %}

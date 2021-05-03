@@ -1,0 +1,10 @@
+{% extends 'baseBack.html.twig' %}
+{% block title %}Gestion Articles{% endblock %}
+{% block contentHeader %} Ajouter un article {% endblock %}
+{%  block contentMain  %}
+
+    {{ form_start(form) }}
+    <button type="submit" class="btn bg-gradient-info">ajouter</button>
+    {{ form_end(form) }}
+
+{% endblock %}

@@ -1,0 +1,149 @@
+{% extends 'baseBack.html.twig' %}
+ {% block contentMain%}
+     <!-- Main content -->
+     <style>
+         th
+         {
+             color: #007bff;
+         }
+     </style>
+     <section class="content">
+         <div class="row">
+             <div class="col-12">
+
+                 <div class="card">
+                     <div class="card-header">
+                         <h3 class="card-title">Liste Des Questions</h3>
+                     </div>
+
+                     <!-- /.card-header -->
+                     <div class="card-body">
+                         <table id="example1" class="table table-bordered table-hover">
+                             <script>
+                                 $(function () {
+
+                                     $('#example1').DataTable({
+                                         "paging": true,
+                                         "lengthChange": false,
+                                         "searching": false,
+                                         "ordering": true,
+                                         "info": true,
+                                         "autoWidth": false,
+                                         "responsive": true,
+                                     });
+                                 });
+                             </script>
+
+                             <thead>
+
+                             <tr>
+                                 <th>
+                                     id
+                                 </th>
+                                 <th>
+                                     Catégorie médicale
+                                 </th>
+                                 <th>
+                                     titre
+                                 </th>
+                                 <th>
+                                     symptomes
+                                 </th>
+                                 <th>
+                                     détails
+                                 </th>
+                                 <th>
+                                     état
+                                 </th>
+
+                             </tr>
+                             </thead>
+                             <tbody id="myTable">
+                             {% for c in q %}
+
+                                 <td>  {{ c.id }}  </td>
+                                 <td>  {{ c.categorieMedicale.nom }}  </td>
+                                 <td>  {{ c.titre }} </td>
+                                 <td>  {{ c.symptomes }}  </td>
+                                 <td>
+                                     <ul>
+                                         <li>{% if c.isTreated==0%}
+                                                 Pas de traitement en cours
+                                             {% else %}
+                                                 traitement en cours
+                                             {% endif %}
+
+
+                                         </li>
+                                         <li>  {% if c.isAntMed==0%}
+                                                 Pas d'antécédent médicaux
+                                             {% else %}
+                                                 il y a des antécédents médicaux
+                                             {% endif %}
+
+                                         </li>
+                                         <li>  {% if c.isNameShown==0%}
+                                                 oui
+                                             {% else %}
+                                                 non
+                                             {% endif %}
+
+                                         </li>
+                                         {% if c.taille==null%}
+
+                                     {% else %}
+                                         <li>       Taille: {{ c.taille }}
+                                             {% endif %}
+                                         </li>
+                                         {% if c.poids==null%}
+
+                                         {% else %}
+                                         <li>    Poids:  {{ c.poids }}
+                                             {% endif %}
+                                         </li>
+                                     </ul>
+                                 <td>  {% if c.isAnswered==0%}
+                                         répondue
+                                     {% else %}
+                                         pas de réponse
+                                     {% endif %}
+                                 </td>
+
+                                 <td><a href="{{ path('suppQAdmin',{'id':c.id}) }}"class="nav-link">
+                                         <i class="fas fa-trash nav-icon"></i></a></td>
+                                 </tr>
+                             {%  endfor %}
+                             </tbody>
+                         </table>
+                     </div>
+                     <!-- /.card-body -->
+                 </div>
+                 <!-- /.card -->
+             </div>
+             <!-- /.col -->
+         </div>
+         <!-- /.row -->
+     </section>
+     <!-- /.content -->
+     </div>
+     <!-- /.content-wrapper -->
+
+
+     <!-- Control Sidebar -->
+     <aside class="control-sidebar control-sidebar-dark">
+         <!-- Control sidebar content goes here -->
+     </aside>
+     <!-- /.control-sidebar -->
+     </div>
+     <!-- ./wrapper -->
+     </div>
+ {% endblock %}
+
+
+
+
+
+
+
+
+

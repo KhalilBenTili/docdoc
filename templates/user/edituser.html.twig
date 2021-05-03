@@ -1,0 +1,25 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block contentHeader %}
+    <span class="login100-form-title p-b-43">
+						Attribuer un role
+					</span>
+    {{ form_start(userForm) }}
+
+
+    {{ form_row(userForm.roles) }}
+
+    <div class="container-login100-form-btn">
+        <button class="btn btn-block btn-info" type="submit" >
+            Confirmer
+        </button>
+    </div>
+
+
+
+
+
+
+    {{ form_end(userForm) }}
+
+{% endblock %}

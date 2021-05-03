@@ -1,0 +1,322 @@
+
+<!doctype html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+        <style type="text/css">
+            body{
+                background-image: url("{{ asset('distlogin/images/banner.png') }}");
+                background-repeat: no-repeat;
+                background-size: 100% 100%;
+
+            }
+            .emp-profile{
+                padding: 3%;
+                margin-top: 6%;
+                margin-bottom: 6%;
+                border-radius: 0.5rem;
+                background: #fff;
+                opacity: 0.95;
+            }
+            .profile-img{
+                text-align: center;
+            }
+            .profile-img img{
+                width: 70%;
+                height: 100%;
+            }
+            .profile-img .file {
+                position: relative;
+                overflow: hidden;
+                margin-top: -20%;
+                width: 70%;
+                border: none;
+                border-radius: 50px;
+                font-size: 15px;
+                background: #212529b8;
+            }
+            .profile-img .file input {
+                position: relative;
+                opacity: 0;
+                right: 0;
+                top: 0;
+            }
+            .profile-head h5{
+                color: #333;
+            }
+            .profile-head h6{
+                color: #0062cc;
+            }
+            .profile-edit-btn{
+                border: none;
+                border-radius: 1.5rem;
+                width: 70%;
+                padding: 2%;
+                font-weight: 600;
+                color: #6c757d;
+                cursor: pointer;
+            }
+            .proile-rating{
+                font-size: 12px;
+                color: #818182;
+                margin-top: 5%;
+            }
+            .proile-rating span{
+                color: #495057;
+                font-size: 15px;
+                font-weight: 600;
+            }
+            .profile-head .nav-tabs{
+                margin-bottom:5%;
+            }
+            .profile-head .nav-tabs .nav-link{
+                font-weight:600;
+                border: none;
+            }
+            .profile-head .nav-tabs .nav-link.active{
+                border: none;
+                border-bottom:2px solid #0062cc;
+            }
+            .profile-work{
+                padding: 14%;
+                margin-top: -15%;
+            }
+            .profile-work p{
+                font-size: 12px;
+                color: #818182;
+                font-weight: 600;
+                margin-top: 10%;
+            }
+            .profile-work a{
+                text-decoration: none;
+                color: #495057;
+                font-weight: 600;
+                font-size: 14px;
+            }
+            .profile-work ul{
+                list-style: none;
+            }
+            .profile-tab label{
+                font-weight: 600;
+            }
+            .profile-tab p{
+                font-weight: 600;
+                color: #0062cc;
+            } </style>
+    </head>
+    <body data-new-gr-c-s-check-loaded="14.1001.0" data-gr-ext-installed="">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!------ Include the above in your HEAD tag ---------->
+
+    <div class="container emp-profile tab-content profile-tab">
+        <form method="post">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="profile-img">
+                        {#<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt=""/>#}
+                        <img src="{{ asset('uploads/images/' ~ app.user.image) }}" class="profile-img" >
+                        <div class="file btn btn-lg btn-primary">
+                            <a href="{{ path('updateimage',{'id':app.user.id}) }}">Ajouter une Photo</a>
+                            {#<input type="file" name="file"/>#}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="profile-head">
+                        <h5  style="color:#0000cc">
+                           Bienvenu {{ app.user.prenom }} {{ app.user.nom }}
+                        </h5>
+                        <h6  style="color:#0000cc">
+                            {{ app.user.type |upper }} {{ app.user.specialite }}
+                        </h6>
+                        <p style="color:#0000cc" >Profil de l'utilsateur</p>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    {#<input type="submit" class="profile-edit-btn" name="btnAddMore" value="Edit Profile"/>#}
+                    {#<button type="submit" class="profile-edit-btn" name="btnAddMore" value="Edit Profile"></button>#}
+                   <div>
+                    <td><a href="{{ path('ModifierUser',{'id':app.user.id}) }}"> Editer votre profil </a></td></div>
+                  {#  <div><a href="{{ path('app_logout')}}">Se déconnecter</a></div>#}
+                    <div><a href="{{ path('accueil')}}">Page d'accueil</a></div>
+                    {#<td><a href="{{ path('ModifierUser',{'id':app.user.id}) }}"> Modifier </a></td>#}
+
+                </div>
+            </div>
+            <div class="row">
+                   <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>User Id</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ app.user.id }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Nom</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ app.user.prenom }} {{ app.user.nom }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Email</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ app.user.email }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Numéro de téléphone</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ app.user.numtel }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Date de naissance</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ app.user.dnaissance|date }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Adresse</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ app.user.adresse }}</p>
+                                </div>
+                            </div>
+                   </div>
+                            <div class="col-md-6">
+                                    {% if(app.user.type == "medecin") %}
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Disponabilité</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p>{{ app.user.disponabilite | date}}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>CIN </label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p>{{ app.user.cin }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Matricule</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p>{{ app.user.matricule }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>CNAM</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p>{{ app.user.cnam }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>CNSS</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p>{{ app.user.cnss }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Spécialité</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p>{{ app.user.specialite}}</p>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                            {% if(app.user.type == "pharmacien") %}
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Pharmacie</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{ app.user.pharmacie }}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>CIN </label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{ app.user.cin }}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Matricule</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{ app.user.matricule }}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>CNAM</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{ app.user.cnam }}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>CNSS</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{ app.user.cnss }}</p>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {% if(app.user.type == "delegue") %}
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>CIN </label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{ app.user.cin }}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Societé</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{ app.user.societe }}</p>
+                                    </div>
+                                </div>
+
+                                {% endif %}
+                           </div>
+            </div>
+
+        </form>
+    </div>
+    </body>
+    </html>

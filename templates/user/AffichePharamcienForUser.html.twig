@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+    {% block body %}
+
+
+        <div class="ml-blogComments">
+            <div style="display: inline-block;top: 0px;left: 750px;" class="col-sm-4 col-12">
+                <input class="form-control round" placeholder="Search" type="text" id="search">
+            </div>
+            <div  id="sa">
+                <script src="{{ asset('distClient/js/jquery.min.js') }}"></script>
+                <br>
+                <br>
+                <div class="card-body">
+                    <div align="center" class="row">
+                        <div class="col-md-5">
+                            <h4 class="ml-blogComments__title">Liste des pharmacies</h4>
+                            <ol class="ml-comments">
+
+                                {% for i in user%}
+                                    <medecin>
+                                        {% if i.type == "pharmacien" %}
+                                            <div class="ml-comments__container ml-imageBox ml-imageBox--detailsHover ml-imageBox--hasShadow ml-imageBox--mb-40">
+                                                <span class="ml-comments__author">Pharmacie {{ i.pharmacie }}</span>
+                                                {# <span class="ml-comments__meta">15 minutes ago </span>#}
+                                                <div class="ml-comments__text">
+                                                    <p>Pharmacien {{ i.nom }} {{ i.prenom }} </p>
+
+                                                    <ul class="ml-4 mb-0 fa-ul text-muted">
+                                                        <li class="small"><span class="fa-li"></span><i class="fas fa-lg fa-building"></i>  Adresse : {{ i.adresse }} </li>
+                                                        <li class="small"><span class="fa-li"></span><i class="fas fa-lg fa-phone"></i> Contact : {{ i.numtel }} </li>
+                                                    </ul>
+
+
+
+
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    </medecin>
+                                {% endfor %}
+
+                            </ol><!--/.ml-comments-->
+                            <div class="pagination">
+                                {{ knp_pagination_render(user) }}
+                            </div>
+                            <!--/.ml-comments__message-->
+                        </div><!--/.col-md-12-->
+                    </div><!--/.row-->
+                    <script>
+
+                        $(document).ready(function(){
+                            $('#search').keyup(function(){
+                                search_table($(this).val());
+                            });
+                            function search_table(value){
+                                $('#sa medecin').each(function(){
+                                    var found = 'false';
+                                    $(this).each(function(){
+                                        if($(this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0)
+                                        {
+                                            found = 'true';
+                                        }
+                                    });
+                                    if(found == 'true')
+                                    {
+                                        $(this).show();
+
+                                    }
+                                    else
+                                    {
+                                        $(this).hide();
+
+                                    }
+                                });
+                            }
+                        });
+                    </script>
+                </div>
+            </div>
+        </div>
+
+    {% endblock %}

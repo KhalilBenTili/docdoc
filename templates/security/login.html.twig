@@ -1,0 +1,73 @@
+{% extends 'baseLR.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block asideright %}
+
+<form method="post">
+    {% if error %}
+        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    {% if app.user %}
+        <div class="mb-3">
+            Vous êtes connecté en tant que {{ app.user.username }}, <a href="{{ path('app_logout') }}">Se déconnecter</a>
+        </div>
+    {% endif %}
+
+    <h1 class="h3 mb-3 font-weight-normal">
+        Veuillez vous connecter</h1>
+
+    <label for="inputEmail">Adresse e-mail :</label>
+    <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
+    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="input100" >
+        <span class="focus-input100"></span>
+        <span class="label-input100">Adresse e-mail</span>
+    </div>
+    <label for="inputPassword">Mot de passe : </label>
+    <div class="wrap-input100 validate-input" data-validate="Password is required">
+    <input type="password" name="password" id="inputPassword" class="input100" required>
+        <span class="focus-input100"></span>
+        <span class="label-input100">Mot de passe</span>
+    </div>
+
+    <input type="hidden" name="_csrf_token"
+           value="{{ csrf_token('authenticate') }}"
+    >
+
+
+
+        <div class="checkbox mb-3">
+            <label>
+                <input type="checkbox" name="_remember_me"> Remember me
+            </label>
+        </div>
+
+
+
+    <div class="container-login100-form-btn">
+        <button class="login100-form-btn" type="submit">
+            Connexion
+        </button>
+    </div>
+    <br>
+
+    <div class="container-login100-form-btn">
+        <button class="login100-form-btn" type="submit" >
+           <a href="{{ path('app_register')}}">S'inscrire</a>
+        </button>
+    </div>
+    <br>
+    <br>
+    <div class="login100-form-social flex-c-m">
+        <a href="https://www.facebook.com/" class="login100-form-social-item flex-c-m bg1 m-r-5">
+            <i class="fa fa-facebook-f" aria-hidden="true"></i>
+        </a>
+
+        <a href="https://twitter.com/" class="login100-form-social-item flex-c-m bg2 m-r-5">
+            <i class="fa fa-twitter" aria-hidden="true"></i>
+        </a>
+    </div>
+</form>
+{#{% endblock %}#}
+{% endblock %}

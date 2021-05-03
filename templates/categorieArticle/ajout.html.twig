@@ -1,0 +1,10 @@
+{% extends 'baseBack.html.twig' %}
+{% block title %}Gestion Categories{% endblock %}
+{% block contentHeader %} Ajouter une categorie {% endblock %}
+{%  block contentMain  %}
+
+    {{ form_start(form) }}
+    <button type="submit" class="far fa-plus-square ">ajouter</button>
+    {{ form_end(form) }}
+
+{% endblock %}

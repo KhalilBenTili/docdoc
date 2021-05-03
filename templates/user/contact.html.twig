@@ -1,0 +1,8 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block contentHeader %}
+    {{ form_start(form) }}
+       <h3>Répondre le {{ reclamation.user.type }}  {{ reclamation.user.prenom }}  {{ reclamation.user.nom }} via un message mail sur l'adresse {{ reclamation.user.email }}</h3>
+    {{ form_row(form.message) }}
+    {{ form_end(form) }}
+{% endblock %}

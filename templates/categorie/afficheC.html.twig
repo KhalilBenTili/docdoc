@@ -1,0 +1,135 @@
+{% extends 'baseBack.html.twig' %}
+{% block contentHeader %}
+    Liste des catégories
+{% endblock %}
+{% block contentMain %}
+    <section class="content">
+        <!-- Default box -->
+        <div class="card card-solid" >
+            <div class="card-header">
+                <a class="btn bg-gradient-info float-left " href="{{ path('AjouterC') }}">
+                    <i class="far fa-plus-square "> ajouter
+                    </i>
+
+                </a>
+
+                <div class="card-tools row">
+
+                    <div class="input-group input-group-sm col-md-8" >
+                        <input  type="search" id="search" class="form-control float-right" placeholder="Search">
+                        <div class="input-group-append">
+                            <a  class="btn btn-default"><i class="fas fa-search"></i></a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="card-body pb-0">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 " id="all">
+                        <div class="card-body table-responsive p-0" style="height: 300px;">
+                            <table id="t" class="table table-head-fixed text-nowrap">
+                                <thead class="thead">
+                                <tr>
+                                    <td>Id</td>
+                                    <td>Titre</td>
+                                    <td>Description</td>
+                                </tr>
+                                </thead>
+                                <tbody id="all">
+                                {% for c in repo %}
+                                    <tr>
+                                        <td>
+                                            {{ c.id }}
+                                        </td>
+                                        <td>
+                                            {{ c.titre }}
+                                        </td>
+                                        <td>
+                                            {{ c.description }}
+                                        </td>
+                                        <td class="project-actions text-right">
+
+                                            <a class="btn btn-info btn-sm" href="{{ path('updateC', {'id': c.id}) }}">
+                                                <i class="fas fa-pencil-alt">
+                                                </i>
+                                                modifer
+                                            </a>
+                                            <a class="btn btn-danger btn-sm" href="{{ path('deleteC', {'id': c.id}) }}">
+                                                <i class="fas fa-trash">
+                                                </i>
+                                                supprimer
+                                            </a>
+                                        </td>
+
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                                <tbody id="search">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+
+            </div>
+            <!-- /.card-footer -->
+        </div>
+        <!-- /.card -->
+
+    </section>
+
+
+    <script
+            src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+    </script>
+    <script>
+        $( document ).ready(function() {
+            $("#search").keyup(function(e){
+                /* La variable value va prendre la valeur insérer dans le champ de texte
+                afin d’effectuer la recherche */
+                var value = $(this).val();
+                /* Ajax est lancé lors du remplissage du champ texte dont l’id est
+                « search » pour faire la recherche */
+
+                6
+
+                $.ajax({
+                    /* l’url est une chaine de caractères contenant l’adresse où la requête est
+                    envoyée */
+                    url : "{{ path('searchCategoriex') }}",
+                    /* La méthode utilisée pour transférer les données est GET */
+                    type : 'GET',
+                    /*Ici search value va prendre la chaine entrée par un utilisateur dans la
+                    zone de recherche et sera placée après l’url */
+                    data: {
+                        'searchValue' : value
+                    },
+                    /*Cette fonction permet de vider le contenu du tableau pour recevoir le
+                    nouveau contenu*/
+                    success : function(retour){
+                        if(retour){
+                            $('#t tbody#search').empty();
+                            $.each(JSON.parse(retour), function(i, obj) {
+                                $('#t tbody#all').hide();
+                                $('#t tbody#search').append('<tr><td> '+obj.id+' </td><td> '+obj.titre+' </td><td>'+obj.description+' </td><td ><a class="btn btn-info btn-sm" href="updateC/'+obj.id+'">modifier</a> </br><a class="btn btn-danger btn-sm"   ' + 'href="deleteC/'+obj.id+'">supprimer</a></td></tr>');
+                            });
+                        }
+                        else
+                        {
+                            $('#t tbody#all').show();
+                            $('#t tbody#search').empty();
+                            $('#t tbody#search').fadeIn('fast');
+                        }
+                    },
+                });
+                return false;
+            });
+        });
+
+    </script>
+{% endblock %}
+

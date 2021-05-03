@@ -1,0 +1,28 @@
+
+
+<table border="1">
+    <tr>
+        <td>
+            id
+        </td>
+        <td>
+            Description
+        </td>
+        <td>
+            Question
+        </td>
+
+    </tr>
+    {% for c in reponse %}
+        <tr>
+            <td>  {{ c.id }}  </td>
+            <td>  {{ c.description }} </td>
+            <td>  {{ c.question.titre }} </td>
+
+
+            <td><a href="{{ path('updateReponse',{'id':c.id}) }}">Modifier</a></td>
+            <td><a href="{{ path('suppReponse',{'id':c.id}) }}">Supprimer</a></td>
+        </tr>
+    {%  endfor %}
+</table>
+

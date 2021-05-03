@@ -1,0 +1,23 @@
+<div  style="padding-top: 200px ;padding-left: 50px ; justify-content: center">
+
+    <div class="ratings" style="padding-left: 90px ;text-align: center ;font-size: large ;"> <span class="product-rating">{{ avg|round(1,'floor') }}</span><span>/5</span><br>
+        <span class="stars">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </span>
+        <div class="rating-text"> <span>{{ nbrate }} ratings</span> </div>
+    </div>
+    <div class="stars">
+        <form action="">
+            <input class="star star-5" id="star-5" type="radio" name="star" value="5"/></a> <label class="star star-5" for="star-5"></label>
+            <input class="star star-4" id="star-4" type="radio" name="star" value="4" /> <label class="star star-4" for="star-4"></label>
+            <input class="star star-3" id="star-3" type="radio" name="star" value="3"/> <label class="star star-3" for="star-3"></label>
+            <input class="star star-2" id="star-2" type="radio" name="star" value="2" /> <label class="star star-2" for="star-2"></label>
+            <input class="star star-1" id="star-1" type="radio" name="star" value="1"/> <label class="star star-1" for="star-1"></label><br>
+            <a class="btn"  style="background-color: #00CFA1; color: white ; align-items: center; margin-left: 125px " href="{{ path('rateService',{'id':service.id}) }}"> rate me</a>
+        </form>
+    </div>
+
+</div>

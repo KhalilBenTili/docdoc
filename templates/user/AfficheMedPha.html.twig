@@ -1,0 +1,53 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block contentHeader %}
+    <!doctype html>
+    <html lang="en">
+    <head>
+
+
+    </head>
+    <body>
+    <h1><p class="text-info"> Fiche du {{ user.type}} {{ user.nom}} {{ user.prenom}} </p></h1>
+    <div class="row">
+    <div class="callout callout-info">
+    <ul>
+
+    <div>
+        <li>  <h3><p class="text-info">Date de naissance :</p></h3></li>
+        {{ user.dnaissance|date }}
+    </div>
+    <div>
+        <li>   <h3><p class="text-info">Mot de passe :</p></h3></li>
+        {{ user.password}}
+    </div>
+    <div>
+        <li> <h3><p class="text-info">Adresse :</p></h3></li>
+        {{ user.adresse }}
+    </div>
+    <div>
+        <li>  <h3><p class="text-info">Numero de telephone :</p></h3></li>
+        {{ user.numtel }}
+    </div>
+        {#<div>
+            <h1>CIN recto :</h1>
+           {{ user.cinrecto }}</div>
+        <div>
+            <h1>CIN verso :</h1>
+              {{ user.cinverso }}</div>#}
+            <div>
+                <li> <h3><p class="text-info">Matricule du {{ user.type }} :</p></h3></li>
+                {{ user.matricule }}</div>
+                <div>
+                    <li> <h3><p class="text-info">Cnam :</p></h3></li>
+                {{ user.cnam }}</div>
+                    <div>
+                        <li>    <h3><p class="text-info">Cnss:</p></h3></li>
+               {{ user.cnss }}</div>
+
+    </ul>
+    </div>
+    </div>
+    </body>
+    </html>
+{% endblock %}

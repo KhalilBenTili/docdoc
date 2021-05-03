@@ -1,0 +1,169 @@
+{% extends 'base.html.twig' %}
+
+
+
+
+
+
+
+
+        {% block body %}
+        <table border="1">
+
+
+            <div class="ml-blogComments">
+                <div style="display: inline-block;top: 0px;left: 750px;" class="col-sm-4 col-12">
+                    <input class="form-control round" placeholder="Search" type="text" id="search">
+                </div>
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+
+                        <br><br><br>
+                        <a class="btn btn-info pull-right" href="{{ path('ajouterQuestion',{'userid':app.user.id}) }}"> Poser une question</a>
+                        <br>
+                        <br>
+                        <div class="ml-comments">
+                            <div class="ml-comments__item">
+                                                {% for c in q %}
+
+
+                                                    <div class=" ml-imageBox ml-imageBox--detailsHover ml-imageBox--hasShadow ml-imageBox--mb-40" style="padding: 5px">
+                                                        <span class="ml-comments__author">
+
+                                                            {% if c.isAnswered==0%}
+                                                                <span class="ml-comments__icon "><i class="fas fa-check-circle " style="color: #00ff80;font-size: x-large"> </i></span>
+
+                                                            {% endif %}
+                                                            {{ c.titre }}
+<br>
+                                                        </span>
+
+
+                                                                  <p style="margin-left: 4em" >
+                                                                      {{ c.categorieMedicale.nom }}<br>
+
+                                                                       {{ c.symptomes }}
+                                                                             <br>
+                                                        <div style="margin-left: 4em" class="ml-comments__text">
+                                                            <p><small>
+                                                                    {% if c.isTreated==0%}
+                                                                        Pas de traitement en cours,
+                                                                    {% else %}
+                                                                        traitement en cours,
+                                                                    {% endif %}
+
+
+
+                                                                    {% if c.isAntMed==0%}
+                                                                        Pas d'antécédent médicaux,
+                                                                    {% else %}
+                                                                        il y a des antécédents médicaux,
+                                                                    {% endif %}
+
+
+                                                                    {% if c.taille==null%}
+
+                                                                    {% else %}
+                                                                        Taille: {{ c.taille }},
+                                                                    {% endif %}
+
+                                                                    {% if c.poids==null%}
+
+                                                                    {% else %}
+                                                                        Poids:  {{ c.poids }},
+                                                                    {% endif %}
+
+
+                                                                    {% if c.isAnswered==0%}
+                                                                        répondue
+                                                                    {% else %}
+                                                                        pas de réponse
+                                                                    {% endif %}
+                                                                </small></p>
+                                                            <div class="ml-comments__replyWrapp">
+
+                                                                <div >
+
+                                                                    <a href="{{ path('AfficherQ',{'id':c.id, 'userid':app.user.id}) }}"><i class="fas fa-reply fa-lg"></i></a>
+                                                                    {% if app.user.id==c.user.id %}
+
+                                                                        <a href="{{ path('modifierQ',{'id':c.id}) }}"><i class="fas fa-edit fa-lg"></i></a>
+
+                                                                        <a href="{{ path('suppQ',{'id':c.id}) }}"><i class="fas fa-trash-alt fa-lg"></i></a>
+                                                                    {% endif %}
+                                                                </div>
+
+                                                            </div><!--/.ml-comments__replyWrapp-->
+                                                        </div>
+
+                                                    </div><!--/.ml-comments__container-->
+                                                {% endfor %}
+                                                <!--/.ml-comments__children-->
+                                            </div><!--/.ml-comments__item-->
+                                            <!--/.ml-comments__item-->
+                                        </div><!--/.ml-comments-->
+
+                                        <!--/.ml-comments__message-->
+                                    </div>
+                                    <div class="col-md-3"></div>
+                                </div><!--/.row-->
+                            </div>
+                        </table>
+
+
+
+                    <style>
+                        .fa-trash-alt
+                        {
+                            color:#5bb7ed;
+                            padding-right: 10px;
+
+                        }
+                        .fa-reply
+                        {
+                            color:#5bb7ed;
+                            padding-right: 13px;
+                        }
+                        .fa-edit
+                        {
+                            color:#5bb7ed;
+                            padding-right: 10px;
+                        }
+                        .sizeQ
+                        {
+                            height: auto;
+                            width:800px;
+                            margin-left: auto;
+                            margin-right: auto;
+                        }
+                    </style>
+                </div>
+
+
+            </div>
+        </div>
+    </section>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+{% endblock %}
+
+
+
+
+

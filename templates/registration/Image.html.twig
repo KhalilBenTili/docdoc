@@ -1,0 +1,26 @@
+{% extends 'baseLR.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block asideright %}
+	<span class="login100-form-title p-b-43">
+						Merci d'ajouter votre photo de profile
+					</span>
+{{ form(form) }}
+
+{#	<span class="login100-form-title p-b-43">
+						Merci d'ajouter votre photo de profile
+					</span>
+	{{ form_start(form) }}
+
+
+	<div class="form-group">
+		<h7>Importer une image </h7>
+		<div class="input-group">
+
+			{{ form_widget(form.image) }}
+			{{ form_row(form.image) }}
+		</div>
+	</div>
+	{{ form_end(form) }}#}
+{% endblock %}

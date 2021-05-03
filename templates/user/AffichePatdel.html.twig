@@ -1,0 +1,34 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block contentHeader %}
+    <!doctype html>
+    <html lang="en">
+    <head>
+    </head>
+    <body>
+    <h1><p class="text-info">Fiche du {{ user.type}} {{ user.nom}} {{ user.prenom}}</p> </h1>
+    <div class="row">
+        <div class="callout callout-info">
+            <ul>
+    <div>
+        <li>    <h3><p class="text-info">Date de naissance :</h3></li>
+    {{ user.dnaissance|date }}
+    </div>
+    <div>
+        <li>    <h3><p class="text-info">Mot de passe :</h3></li>
+    {{ user.password}}
+    </div>
+    <div>
+        <li>    <h3><p class="text-info">Adresse :</h3></li>
+    {{ user.adresse }}
+    </div>
+    <div>
+        <li>    <h3><p class="text-info">Numero de telephone :</h3></li>
+    {{ user.numtel }}
+    </div>
+    </ul>
+    </div>
+    </div>
+    </body>
+    </html>
+{% endblock %}

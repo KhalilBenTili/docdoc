@@ -1,0 +1,63 @@
+<html>
+<head>
+<title>phpunit.xml.dist</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #080808; font-style: italic;}
+.s1 { color: #174ad4;}
+.s2 { color: #080808;}
+.s3 { color: #067d17;}
+.s4 { color: #8c8c8c; font-style: italic;}
+.s5 { color: #0033b3;}
+.s6 { color: #080808;}
+</style>
+</head>
+<body bgcolor="#ffffff">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+phpunit.xml.dist</font>
+</center></td></tr></table>
+<pre><span class="s0">&lt;?</span><span class="s1">xml version</span><span class="s3">=&quot;1.0&quot; </span><span class="s1">encoding</span><span class="s3">=&quot;UTF-8&quot;</span><span class="s0">?&gt;</span>
+
+<span class="s4">&lt;!-- https://phpunit.readthedocs.io/en/latest/configuration.html --&gt;</span>
+<span class="s2">&lt;</span><span class="s5">phpunit </span><span class="s1">xmlns:xsi</span><span class="s3">=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+         <span class="s1">xsi:noNamespaceSchemaLocation</span><span class="s3">=&quot;bin/.phpunit/phpunit.xsd&quot;</span>
+         <span class="s1">backupGlobals</span><span class="s3">=&quot;false&quot;</span>
+         <span class="s1">colors</span><span class="s3">=&quot;true&quot;</span>
+         <span class="s1">bootstrap</span><span class="s3">=&quot;tests/bootstrap.php&quot;</span>
+<span class="s2">&gt;</span>
+    <span class="s2">&lt;</span><span class="s5">php</span><span class="s2">&gt;</span>
+        <span class="s2">&lt;</span><span class="s5">ini </span><span class="s1">name</span><span class="s3">=&quot;error_reporting&quot; </span><span class="s1">value</span><span class="s3">=&quot;-1&quot; </span><span class="s2">/&gt;</span>
+        <span class="s2">&lt;</span><span class="s5">server </span><span class="s1">name</span><span class="s3">=&quot;APP_ENV&quot; </span><span class="s1">value</span><span class="s3">=&quot;test&quot; </span><span class="s1">force</span><span class="s3">=&quot;true&quot; </span><span class="s2">/&gt;</span>
+        <span class="s2">&lt;</span><span class="s5">server </span><span class="s1">name</span><span class="s3">=&quot;SHELL_VERBOSITY&quot; </span><span class="s1">value</span><span class="s3">=&quot;-1&quot; </span><span class="s2">/&gt;</span>
+        <span class="s2">&lt;</span><span class="s5">server </span><span class="s1">name</span><span class="s3">=&quot;SYMFONY_PHPUNIT_REMOVE&quot; </span><span class="s1">value</span><span class="s3">=&quot;&quot; </span><span class="s2">/&gt;</span>
+        <span class="s2">&lt;</span><span class="s5">server </span><span class="s1">name</span><span class="s3">=&quot;SYMFONY_PHPUNIT_VERSION&quot; </span><span class="s1">value</span><span class="s3">=&quot;8.5&quot; </span><span class="s2">/&gt;</span>
+    <span class="s2">&lt;/</span><span class="s5">php</span><span class="s2">&gt;</span>
+
+    <span class="s2">&lt;</span><span class="s5">testsuites</span><span class="s2">&gt;</span>
+        <span class="s2">&lt;</span><span class="s5">testsuite </span><span class="s1">name</span><span class="s3">=&quot;Project Test Suite&quot;</span><span class="s2">&gt;</span>
+            <span class="s2">&lt;</span><span class="s5">directory</span><span class="s2">&gt;</span><span class="s6">tests</span><span class="s2">&lt;/</span><span class="s5">directory</span><span class="s2">&gt;</span>
+        <span class="s2">&lt;/</span><span class="s5">testsuite</span><span class="s2">&gt;</span>
+    <span class="s2">&lt;/</span><span class="s5">testsuites</span><span class="s2">&gt;</span>
+
+    <span class="s2">&lt;</span><span class="s5">filter</span><span class="s2">&gt;</span>
+        <span class="s2">&lt;</span><span class="s5">whitelist </span><span class="s1">processUncoveredFilesFromWhitelist</span><span class="s3">=&quot;true&quot;</span><span class="s2">&gt;</span>
+            <span class="s2">&lt;</span><span class="s5">directory </span><span class="s1">suffix</span><span class="s3">=&quot;.php&quot;</span><span class="s2">&gt;</span><span class="s6">src</span><span class="s2">&lt;/</span><span class="s5">directory</span><span class="s2">&gt;</span>
+        <span class="s2">&lt;/</span><span class="s5">whitelist</span><span class="s2">&gt;</span>
+    <span class="s2">&lt;/</span><span class="s5">filter</span><span class="s2">&gt;</span>
+
+    <span class="s2">&lt;</span><span class="s5">listeners</span><span class="s2">&gt;</span>
+        <span class="s2">&lt;</span><span class="s5">listener </span><span class="s1">class</span><span class="s3">=&quot;Symfony\Bridge\PhpUnit\SymfonyTestsListener&quot; </span><span class="s2">/&gt;</span>
+    <span class="s2">&lt;/</span><span class="s5">listeners</span><span class="s2">&gt;</span>
+
+    <span class="s4">&lt;!-- Run `composer require symfony/panther` before enabling this extension --&gt;</span>
+    <span class="s4">&lt;!--</span>
+    <span class="s4">&lt;extensions&gt; 
+        &lt;extension class=&quot;Symfony\Component\Panther\ServerExtension&quot; /&gt; 
+    &lt;/extensions&gt; 
+    --&gt;</span>
+<span class="s2">&lt;/</span><span class="s5">phpunit</span><span class="s2">&gt;</span>
+</pre>
+</body>
+</html>

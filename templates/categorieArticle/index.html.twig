@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Article index{% endblock %}</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href={{ asset("distAdmin/plugins/fontawesome-free/css/all.min.css")}}>
+    <!-- Theme style -->
+    <link rel="stylesheet" href={{ asset("distAdmin/css/adminlte.min.css")}}>
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <!-- Left navbar links -->
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+            </li>
+        </ul>
+
+        <!-- Right navbar links -->
+        <ul class="navbar-nav ml-auto">
+            <!-- Messages Dropdown Menu -->
+            <li class="nav-item dropdown">
+                <a class="nav-link" data-toggle="dropdown" href="#">
+                    <i class="far fa-comments"></i>
+                    <span class="badge badge-danger navbar-badge">3</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                    <a href="#" class="dropdown-item">
+                        <!-- Message Start -->
+                        <div class="media">
+                            <img src={{ asset('distadmin/img/user1-128x128.jpg')}} alt='User' Avatar class="img-size-50 mr-3 img-circle">
+                            <div class="media-body">
+                                <h3 class="dropdown-item-title">
+                                    Brad Diesel
+                                    <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
+                                </h3>
+                                <p class="text-sm">Call me whenever you can...</p>
+                                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                            </div>
+                        </div>
+                        <!-- Message End -->
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <!-- Message Start -->
+                        <div class="media">
+                            <img src={{ asset('distAdmin/img/user8-128x128.jpg')}} alt="User" Avatar  class="img-size-50 img-circle mr-3">
+                            <div class="media-body">
+                                <h3 class="dropdown-item-title">
+                                    John Pierce
+                                    <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
+                                </h3>
+                                <p class="text-sm">I got your message bro</p>
+                                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                            </div>
+                        </div>
+                        <!-- Message End -->
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <!-- Message Start -->
+                        <div class="media">
+                            <img src={{asset('distAdmin/img/user3-128x128.jpg')}} alt="user" class="img-size-50 img-circle mr-3">
+                            <div class="media-body">
+                                <h3 class="dropdown-item-title">
+                                    Nora Silvester
+                                    <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
+                                </h3>
+                                <p class="text-sm">The subject goes here</p>
+                                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                            </div>
+                        </div>
+                        <!-- Message End -->
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
+                </div>
+            </li>
+            <!-- Notifications Dropdown Menu -->
+            <li class="nav-item dropdown">
+                <a class="nav-link" data-toggle="dropdown" href="#">
+                    <i class="far fa-bell"></i>
+                    <span class="badge badge-warning navbar-badge">{{ 16 }}</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                    <span class="dropdown-header">{{ 16 }} Notifications</span>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-envelope mr-2"></i> {{6}} Demande verification
+                    </a>
+
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-users mr-2"></i>{{ 10 }} Reclamation
+                    </a>
+
+                </div>
+            </li>
+
+        </ul>
+    </nav>
+
+    <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: #263138;">
+        <!-- Brand Logo -->
+        <a href="" class="brand-link" style="border-bottom: 1px solid #01ff70">
+            <img src={{ asset("distAdmin/img/docdoc.png")}} alt="docdoc" class="brand-image "
+                 style="opacity: .8">
+            <span class="brand-text font-weight-light">DOCDOC</span>
+        </a>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Sidebar Menu -->
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>
+                                Dashboard
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item has-treeview">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-users"></i>
+                            <p>
+                                Utilisateurs
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="" class="nav-link">
+                                    <i class="fas fa-user-md nav-icon"></i>
+                                    <p>Medecins</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="" class="nav-link">
+                                    <i class="fas fa-user-tie nav-icon"></i>
+                                    <p>Délégués</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="" class="nav-link">
+                                    <i class="fas fa-user-injured nav-icon"></i>
+                                    <p>Patients</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="" class="nav-link">
+                                    <i class="fas fa-user-nurse nav-icon"></i>
+                                    <p>Pharmaciens</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item has-treeview">
+                        <a href=path="affichercatservice" class="nav-link">
+                            <i class="nav-icon fas fa-shipping-fast"></i>
+                            <p>
+                                Service à domicile
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="" class="nav-link">
+
+                                    <i class="fas fa-align-left nav-icon"></i>
+                                    <p>Catégorie Service</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="" class="nav-link">
+                                    <i class="fas fa-users nav-icon"></i>
+                                    <p>Fourniseur Service</p>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-exclamation"></i>
+                            <p>
+                                Réclamations
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-th"></i>
+                            <p>
+                                new nav item
+                            </p>
+                        </a>
+                    </li>
+
+                </ul>
+            </nav>
+            <!-- /.sidebar-menu -->
+        </div>
+        <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0 text-dark">{% block contentHeader%}    <h1>Article index</h1>
+
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Contenu</th>
+                                        <th>Titre</th>
+                                        <th>Slug</th>
+                                        <th>Featured_image</th>
+                                        <th>actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for article in articles %}
+                                        <tr>
+                                            <td>{{ article.id }}</td>
+                                            <td>{{ article.contenu }}</td>
+                                            <td>{{ article.titre }}</td>
+                                            <td>{{ article.slug }}</td>
+                                            <td>{{ article.featuredImage }}</td>
+                                            <td>
+                                                <a href="{{ path('article_show', {'id': article.id}) }}">show</a>
+                                                <a href="{{ path('article_edit', {'id': article.id}) }}">edit</a>
+                                            </td>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="6">no records found</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+
+                                <a href="{{ path('article_new') }}">Create new</a> {% endblock %}</h1>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <div class="content">
+            {% block contentMain%} {% endblock %}
+        </div>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+
+
+<!-- Main Footer -->
+<footer class="main-footer">
+    <!-- To the right -->
+    <div class="float-right d-none d-sm-inline">
+        Anything you want
+    </div>
+</footer>
+</div>
+<script src={{ asset("distAdmin/plugins/jquery/jquery.min.js")}}></script>
+<!-- Bootstrap 4 -->
+<script src={{ asset("distAdmin/plugins/bootstrap/js/bootstrap.bundle.min.js")}}></script>
+<!-- AdminLTE App -->
+<script src={{ asset("distAdmin/js/adminlte.min.js")}}></script>
+</body>
+</html>

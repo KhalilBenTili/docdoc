@@ -1,0 +1,21 @@
+{% extends 'baseBack.html.twig' %}
+{% block title %}Gestion Service{% endblock %}
+{% block contentHeader %} Update Service {% endblock %}
+{% block contentMain %}
+    {{ form_start(f) }}
+    {{ form_label(f.libelle,"libéllé") }}
+    {{ form_widget(f.libelle) }}
+    {{ form_label(f.categorie,'catégorie') }}
+    {{ form_widget(f.categorie) }}
+    <div class="form-group ">
+        {{ form_label(f.prix,"prix",{'attr':{'class':"form-label"}}) }}
+        {{ form_widget(f.prix,{'attr':{'class':"col-sm-2 number"}}) }}
+    </div>
+    {{ form_label(f.description,'Déscription') }}
+    {{ form_widget(f.description) }}
+    {{ form_label(f.disponibilite,"cette service est'il disponible ?") }}
+    {{ form_widget(f.disponibilite) }}
+
+
+    {{ form_end(f) }}
+{% endblock %}

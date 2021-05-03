@@ -1,0 +1,12 @@
+{% extends 'baseBack.html.twig' %}
+{% block title %}Gestion Categorie {% endblock %}
+{% block contentHeader %} Détails Catégorie {% endblock %}
+{% block contentMain %}
+    <table class="table table-head-fixed text-nowrap">
+
+    <td>{{ categorie.id }}</td>
+    <td>{{ categorie.nom }}</td>
+    </table>
+    <a href="{{ path('affichercatcategorie') }}">back to list</a>
+
+{% endblock %}

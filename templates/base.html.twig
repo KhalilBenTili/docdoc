@@ -1,0 +1,447 @@
+
+<!DOCTYPE html>
+<html lang="zxx">
+<head>
+    {% block head %}
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DocDoc</title>
+        <script src="https://kit.fontawesome.com/2652ac008c.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link href="{{ asset('distClient/css/bootstrap.min.css') }} " rel="stylesheet">
+     <link href="{{ asset("distClient/css/star-rating.css")}}" media="all" rel="stylesheet" type="text/css">
+    <link href="{{ asset('distClient/css/template.css')}}" rel="stylesheet">
+    <link href="{{ asset('distClient/css/icomoon.css')}}" rel="stylesheet">
+    <link href="{{ asset('distClient/addons/slick/slick.css')}}" rel="stylesheet">
+    <link href="{{ asset('distClient/addons/slick/slick-theme.css')}}" rel="stylesheet">
+    <link href="{{ asset('distClient/addons/Magnific-Popup/magnific-popup.css')}}" rel="stylesheet">
+    <link href="{{ asset('https://fonts.googleapis.com/css?family=Muli:400,700%7COpen+Sans:400,700')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('distClient/addons/datepicker/css/datepicker.css')}}">
+    <link rel="stylesheet" href="{{ asset('distClient/addons/datepicker/css/main.css')}}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('bundles/bootstrap-rating/css/rating.css') }}" />
+        <link rel="stylesheet" href="{{ asset('bundles/mercuryseriesflashy/css/flashy.css') }}">
+        <script src="{{ asset('distClient/js/maps.js')}}"></script>
+    {% endblock %}
+    {% block css %}
+    {% endblock %}
+</head>
+<style>
+    .ml-iconbox--style1:hover .ml-iconbox__icon {
+        transition: all 0.2s ease-in-out;
+        background: #00cfa1;
+        color: #ffffff;
+        border:2px solid #00cfa1;
+
+    }
+    .ml-iconbox--style1 .ml-iconbox__icon {
+        color: #00cfa1;
+        border:2px solid #00cfa1;
+
+    }
+
+    .ml-iconbox--style1:hover .ml-iconbox__title {
+        transition: all 0.2s ease-in-out;
+
+        color: #00cfa1;
+    }
+
+
+
+</style>
+<body>
+
+<div id="page_wrapper">
+    <!--/. Responsive menu start -->
+    <ul class="ml-resMenu">
+        <li class="ml-resMenu-back">
+            <span class="ml-resMenu-backIcon glyphicon glyphicon-chevron-left"></span><a href="#" class="ml-resMenu-backLink">Back</a>
+        </li>
+
+        <li><a class="active" href="{{ path('accueil') }}"><span>Accueil</span></a></li>
+        <li ><a href="{{ path('services') }}"><span>Services</span></a></li>
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <li><a class="active" href="{{ path('UserAfficheMedecin')}}"><span>Médecins</span></a></li>
+        <li><a class="active" href="{{ path('UserAffichePharamacien')}}"><span>Pharmacies</span></a></li>
+        {% else %}
+            <li><a class="active" href="{{ path('UserAfficheMedecinFront')}}"><span>Médecins</span></a></li>
+            <li><a class="active" href="{{ path('UserAffichePharamacienFront')}}"><span>Pharmacies</span></a></li>
+        {% endif %}
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            {% if app.user.type == 'delegue' or app.user.type == 'medecin' or app.user.type == 'pharmacien'%}
+                <li class="ml-mainMenu__item"><a href="{{ path('afficheProduit')}}"><span>Produits</span></a></li>
+            {% endif %}
+       {# {% else %}
+            <li class="ml-mainMenu__item"><a href="{{ path('app_login')}}"><span>Medicaments</span></a></li>#}
+        {% endif %}
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            <li><a href="{{ path('afficherblog')}}"><span>Blog</span></a></li>
+        {% else %}
+            <li><a href="{{ path('app_login') }}"><span>Blog</span></a></li>
+        {% endif %}
+        {# ------------------------------ zohra new   ------------------------------------------------ #}
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <li><a href="{{ path('AffQuestion')}}"><span>Forum</span></a></li>
+        {% else %}
+        <li class="ml-mainMenu__item"><a href="{{ path('app_login')}}"><span>Forum/span></a></li>
+        {% endif %}
+
+        {# ------------------------------ zohra new   ------------------------------------------------ #}
+        <li class="ml-res-submenu">
+            <span class="ml-res-submenu-trigger glyphicon glyphicon-chevron-right"></span>
+            <a href="skin.html"><span>Reclamation</span></a>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            <ul class="ml-subMenu">
+                <li class="ml-resMenu-back">
+                    <span class="ml-resMenu-backIcon glyphicon glyphicon-chevron-left"></span><a href="#" class="ml-resMenu-backLink">Back</a>
+                </li>
+
+                <li>
+                    <a href="{{ path('AjouterU',{'id':app.user.id}) }}"><span>Ajouter Reclamation</span></a> </li>
+                <li>
+                    <a href="{{ path('usereclamation',{'id':app.user.id}) }}"><span>Consulter Reclamations</span></a> </li>
+
+            </ul>
+                {% else %}
+                    <ul class="ml-subMenu">
+                        <li class="ml-resMenu-back">
+                            <span class="ml-resMenu-backIcon glyphicon glyphicon-chevron-left"></span><a href="#" class="ml-resMenu-backLink">Back</a>
+                        </li>
+
+                        <li>
+                            <a href="{{ path('app_login') }}"><span>Ajouter Reclamation</span></a> </li>
+                        <li>
+                            <a href="{{ path('app_login') }}"><span>Consulter Reclamations</span></a> </li>
+
+                    </ul>
+
+            {% endif %}
+
+        </li>
+
+    </ul><!--/.ml-resMenu-->
+    <!--/. Responsive menu end -->
+
+    <!--/. Header start -->
+    <header class="ml-header ml-header--light">
+        <div class="ml-topbar-wrapper" style="background: #00cfa1">
+            <div class="ml-container ml-header-containerFull container">
+                <div class="ml-topbar ml-headerbar">
+                    <div class="ml-topbar__component">
+                        <div class="ml-socialIcons">
+                            <a><span class="ml-socialIcons__item ml-icon-instagram ml-socialIcons__item--light"></span></a>
+                          <a><span class="ml-socialIcons__item ml-icon-facebook ml-socialIcons__item--light"></span></a>
+                        </div>
+                    </div><!--/.ml-topbar__component-->
+                    <div class="ml-topbar__component">
+                        {# ---------------------------------------zohra--------------------------------- #}
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                       <p class="ml-cta-text ml-elem--light ml-hidden-xs">Prenez rendez-vous maintenant!</p>
+                        <a href="{{ path('consultationPatient', {'id': app.user.id}) }}" class="ml-cta-btn ml-btn ml-btn--style1 ml-btn--rounded hasAnchor" style="background-color: #00cfa1">Prenez rendez-vous</a>
+                       {% endif %}
+                        {# ---------------------------------------zohra--------------------------------- #}
+                    </div><!--/.ml-topbar__component-->
+                </div><!--/.ml-topbar-->
+            </div><!--/.ml-container-->
+        </div><!--/.ml-topbar-wrapper-->
+        <div class="ml-logobar-wrapper " >
+            <div class="ml-container ml-header-containerFull container">
+                <div class="ml-logobar ml-headerbar ml-headerbar--block-xs">
+                    <div class="ml-logoContainer" >
+                        <a href="{{ path('accueil')}}" class="ml-logoAnchor">
+                            <img style="height: 80px; width: 80px" src="{{ asset('distClient/img-assets/logo.png') }}" alt="" class="ml-logoImg">
+                        </a>
+                    </div><!--/.ml-logoContainer-->
+                    <div class="ml-headerInfo">
+                        <div class="row">
+                            <div class="col-sm-6 col-xs-12">
+                                <div class="ml-iconbox ml-iconbox--l20">
+                                    <div class="ml-iconbox__iconWrapper ml-iconbox__icon--left">
+                                        <span class="ml-iconbox__icon ml-icon-phone-call"></span>
+                                    </div><!--/.ml-iconbox__iconWrapper-->
+                                    <div class="ml-iconbox__contentWrapper">
+                                        <div class="ml-iconbox__titleWrapper">
+                                            <h3 class="ml-iconbox__title">Contacter nous:</h3>
+                                        </div><!--/.ml-iconbox__titleWrapper-->
+                                        <div class="ml-iconbox__descWrapper">
+                                            <p class="ml-iconbox__desc">+216 95 458 789 <br>
+                                                +216 71 000 111</p>
+                                        </div><!--/.ml-iconbox__descWrapper-->
+                                    </div><!--/.ml-iconbox__contentWrapper-->
+                                </div><!--/.ml-iconbox-->
+                            </div><!--/.col-xs-6"-->
+                            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                            {% if is_granted('ROLE_ADMIN') %}
+                            <div class="col-sm-6 col-xs-12">
+                                <div class="ml-iconbox ml-iconbox--l20">
+                                    <div class="ml-iconbox__iconWrapper ml-iconbox__icon--left">
+                                        <span class="ml-iconbox__icon far fa-user"></span>
+                                    </div><!--/.ml-iconbox__iconWrapper-->
+                                    <div class="ml-iconbox__contentWrapper">
+                                        <div class="ml-iconbox__titleWrapper">
+                                            <h3 class="ml-iconbox__title"> {{app.user.prenom}}  {{app.user.nom}}
+                                                <a href="{{ path('user')}}"> (Consulter page admin) </a></h3>
+                                        </div><!--/.ml-iconbox__titleWrapper-->
+                                        <div class="ml-iconbox__descWrapper">
+                                            <p class="ml-iconbox__desc"><a href="{{ path('userinterface') }}">  Voir profil </a> <br>
+                                                <a href="{{ path('app_logout')}}"> Déconnexion </a></p>
+                                        </div><!--/.ml-iconbox__descWrapper-->
+                                    </div><!--/.ml-iconbox__contentWrapper-->
+
+                                </div><!--/.ml-iconbox-->
+                            </div><!--/.col-xs-6"-->
+                                {% else %}
+                                    <div class="col-sm-6 col-xs-12">
+                                        <div class="ml-iconbox ml-iconbox--l20">
+                                            <div class="ml-iconbox__iconWrapper ml-iconbox__icon--left">
+                                                <span class="ml-iconbox__icon ml-icon-clock"></span>
+                                            </div><!--/.ml-iconbox__iconWrapper-->
+                                            <div class="ml-iconbox__contentWrapper">
+                                                <div class="ml-iconbox__titleWrapper">
+                                                    <h3 class="ml-iconbox__title"> {{app.user.prenom}}  {{app.user.nom}} </h3>
+                                                </div><!--/.ml-iconbox__titleWrapper-->
+                                                <div class="ml-iconbox__descWrapper">
+                                                    <p class="ml-iconbox__desc"><a href="{{ path('userinterface') }}">  Voir profil </a> <br>
+                                                        <a href="{{ path('app_logout')}}"> Déconnexion </a></p>
+                                                </div><!--/.ml-iconbox__descWrapper-->
+                                            </div><!--/.ml-iconbox__contentWrapper-->
+
+                                        </div><!--/.ml-iconbox-->
+                                    </div><!--/.col-xs-6"-->
+
+                                    {% endif %}
+                            {% else %}
+                            <div class="col-sm-6 col-xs-12">
+                                <div class="ml-iconbox ml-iconbox--l20">
+                                    <div class="ml-iconbox__iconWrapper ml-iconbox__icon--left">
+                                        <span class="ml-iconbox__icon ml-icon-clock"></span>
+                                    </div><!--/.ml-iconbox__iconWrapper-->
+                                    <div class="ml-iconbox__contentWrapper">
+                                        <div class="ml-iconbox__titleWrapper">
+                                            <h3 class="ml-iconbox__title">Profil</h3>
+                                        </div><!--/.ml-iconbox__titleWrapper-->
+                                        <div class="ml-iconbox__descWrapper">
+                                            <p class="ml-iconbox__desc"><a href="{{ path('app_register')}}"> Créer un compte </a> <br>
+                                                <a href="{{ path('app_login')}}"> Connexion </a> </p>
+                                        </div><!--/.ml-iconbox__descWrapper-->
+                                    </div><!--/.ml-iconbox__contentWrapper-->
+
+                                </div><!--/.ml-iconbox-->
+                            </div><!--/.col-xs-6"-->
+                            {% endif %}
+                        </div><!--/.row-->
+                    </div><!--/.ml-headerInfo-->
+                </div><!--/.ml-logobar-->
+            </div><!--/.ml-container-->
+        </div><!--/.ml-logobar-wrapper-->
+        <div class="ml-menubar-wrapper">
+            <div class="ml-container ml-header-containerFull container">
+                <div class="ml-menubar ml-headerbar">
+                    <div class="ml-mainMenu-trigger">
+                        <a href="#" class="ml-menuBurger">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </a>
+                    </div><!--/.ml-mainMenu-trigger-->
+                    <ul class="ml-mainMenu">
+
+                        <li class="ml-mainMenu__item active"><a href="{{ path('accueil')}}"><span>Acceuil</span></a></li>
+                        <li class="ml-mainMenu__item has-submenu">
+                            <a  href="{{ path('services') }}"><span>Services A domicile</span></a>
+                            <div class="ml-megamenu ml-megamenu--left135" data-col-nr="5">
+                                <div class="ml-megamenu__container ml-megamenu__container--style2">
+                                    {% for i in 0..(app.session.get('categories')|length/2)-1 %}
+                                    <div class="ml-megamenu__component" >
+                                        <div class="ml-iconbox ml-iconbox--center ml-text--center ml-iconbox--style1 ">
+                                            <a href="{{ path('afficheservicesparcategorie',{'categorie':app.session.get('categories')[i].id}) }}" class="ml-iconbox__anchor">
+                                                <div class="ml-iconbox__iconWrapper">
+                                                    <span class="ml-iconbox__icon ml-icon-shield" ></span>
+                                                </div><!--/.ml-iconbox__iconWrapper-->
+                                                <div class="ml-iconbox__contentWrapper">
+                                                    <div class="ml-iconbox__titleWrapper">
+                                                        <h3 class="ml-iconbox__title">{{ app.session.get('categories')[i].libelle  }}</h3>
+                                                    </div><!--/.ml-iconbox__titleWrapper-->
+                                                </div><!--/.ml-iconbox__contentWrapper-->
+                                            </a><!--/.ml-iconbox__anchor-->
+                                        </div><!--/.ml-iconbox-->
+                                        <div class="ml-iconbox ml-iconbox--center ml-text--center ml-iconbox--style1">
+                                            <a  href="{{ path('afficheservicesparcategorie',{'categorie':app.session.get('categories')[i+1].id}) }}"
+                                                class="ml-iconbox__anchor" >
+                                                <div class="ml-iconbox__iconWrapper">
+                                                    <span class="ml-iconbox__icon  ml-icon-shield " ></span>
+                                                </div><!--/.ml-iconbox__iconWrapper-->
+                                                <div class="ml-iconbox__contentWrapper">
+                                                    <div class="ml-iconbox__titleWrapper">
+                                                        <h3 class="ml-iconbox__title  ">{{ app.session.get('categories')[i+1].libelle  }}</h3>
+                                                    </div><!--/.ml-iconbox__titleWrapper-->
+                                                </div><!--/.ml-iconbox__contentWrapper-->
+                                            </a><!--/.ml-iconbox__anchor-->
+                                        </div><!--/.ml-iconbox-->
+                                    </div ><!--/.ml-megamenu__component-->
+                                    {% endfor %}
+                                </div><!--/.ml-megamenu__container-->
+                            </div><!--/.ml-megamenu-->
+                        </li>
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <li class="ml-mainMenu__item"><a href="{{ path('UserAfficheMedecin')}}"><span>Médecins</span></a></li>
+                        <li class="ml-mainMenu__item"><a href="{{ path('UserAffichePharamacien')}}"><span>Pharmacies</span></a></li>
+
+                        {% else %}
+                            <li class="ml-mainMenu__item"><a href="{{ path('UserAfficheMedecinFront')}}"><span>Médecins</span></a></li>
+                            <li class="ml-mainMenu__item"><a href="{{ path('UserAffichePharamacienFront')}}"><span>Pharmacies</span></a></li>
+                        {% endif %}
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                            {% if app.user.type == 'delegue' or app.user.type == 'medecin' or app.user.type == 'pharmacien'%}
+                                <li class="ml-mainMenu__item"><a href="{{ path('afficheProduit')}}"><span>Produits</span></a></li>
+                            {% endif %}
+                        {#{% else %}
+                            <li class="ml-mainMenu__item"><a href="{{ path('app_login')}}"><span>Medicaments</span></a></li>#}
+                        {% endif %}
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                            <li class="ml-mainMenu__item"><a href="{{ path('afficherblog')}}"><span>Blog</span></a></li>
+                        {% else %}
+                            <li class="ml-mainMenu__item"><a href="{{ path('app_login')}}"><span>Blog</span></a></li>
+                        {% endif %}
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                            <li class="ml-mainMenu__item"><a href="{{ path('AffQuestion')}}"><span>Forum</span></a></li>
+                        {% else %}
+                            <li class="ml-mainMenu__item"><a href="{{ path('app_login')}}"><span>Forum</span></a></li>
+                        {% endif %}
+
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        {% if app.user.type == 'medecin' %}
+                            <li class="ml-mainMenu__item"><a href="{{ path('consultationMedecin',{'id': app.user.id})}}"><span>Consultations</span></a></li>
+                        {% elseif app.user.type == 'patient' %}
+                            <li class="ml-mainMenu__item"><a href="{{ path('consultationPatient', {'id': app.user.id})}}"><span>Consultations</span></a></li>
+                        {% endif %}
+                        {% endif %}
+                        <li class="ml-mainMenu__item has-submenu">
+                            <a href="#"><span>Réclamation</span></a>
+                            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                            <div class="ml-submenu">
+                                <ul>
+                                    <li class="ml-submenu__item"><a href="{{ path('AjouterU',{'id':app.user.id}) }}">Ajouter une réclamation</a></li>
+                                    <li class="ml-submenu__item"><a href="{{ path('usereclamation',{'id':app.user.id}) }}">Consulter réclamation</a></li>
+
+                                </ul>
+                            </div>
+                                {% else %}
+                                    <div class="ml-submenu">
+                                        <ul>
+                                            <li class="ml-submenu__item"><a href="{{ path('app_login') }}">Ajouter une réclamation</a></li>
+                                            <li class="ml-submenu__item"><a href=""{{ path('app_login') }}>Consulter réclamation</a></li>
+
+                                        </ul>
+                                    </div>
+                            {% endif %}
+                        </li>
+
+
+
+                    </ul>
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        {% if app.user.type == 'medecin' or app.user.type == 'pharmacien' %}
+                            <div class="ml-cart info-box  "style="margin-right: ">
+                                <a href="#" class="ml-cart__link">
+                                    <span class="note-icon red">{{ app.session.get('number') }}</span>
+                                    <span class="ml-icon-shopping-cart ml-cart__icon"></span>
+                                </a><!--/.ml-cart__link-->
+                                <div class="ml-infoCart">
+                                    <a class="text-black text-lg"> Prix Total: <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ app.session.get('total') }} DT</a>
+                                    <br>
+                                    <br>
+                                    <div >
+                                        <a href="{{ path('panier') }}" class="btn btn-primary ">PANIER</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <a href="{{ path('afficherPaiement', {'userid':app.user.id}) }}" class="btn btn-primary">PAIEMENTS</a>
+                                    </div><!--/.ml-infoCart-buttons-->
+                                </div><!--/.ml-infoCart-->
+                            </div><!--/.ml-cart-->
+                        {% endif %}
+
+                    {% endif %}
+
+                    <div class="ml-searchBar">
+
+                        <div class="ml-search">
+                            <a href="#" class="ml-searchBtn">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </a>
+                            <div class="ml-search-container">
+                                <form action="#" method="get">
+                                    <input class="ml-search__input" type="text" placeholder="SEARCH ...">
+                                    <button class="ml-search__submit glyphicon glyphicon-search" type="submit" value="go"></button>
+                                </form>
+                            </div><!--/.ml-search-->
+                        </div><!--/.ml-search-->
+
+
+
+                    </div><!--/.ml-searchBar-->
+                </div><!--/.ml-menubar-->
+            </div><!--/.ml-container-->
+        </div><!--/.ml-menubar-wrapper-->
+
+    </header>
+    <!--/. Header end -->
+
+
+    {% block body %}
+
+
+    {% endblock %}
+
+<br>
+    <footer class="ml-footer" style="padding-top: 20px; padding-bottom: 20px; background: #263138;">
+        <div class="ml-container container">
+            <div class="row">
+                <div class="col-sm-4 col-md-4">
+                    <p class="ml-footerTitle">QUI NOUS SOMMES</p>
+                    <ul class="ml-footerList">
+                        <li class="ml-footerList__item"><a href="{{ path('about')}}"><span>À propos de nous</span></a></li>
+                        <li class="ml-footerList__item"><a href="{{ path('contactus')}}"><span>contacter nous</span></a></li>
+                    </ul><!--/.ml-footerList-->
+                </div><!--/.col-sm-3 col-md-3-->
+
+                <div class="col-sm-4 col-md-4">
+                    <p class="ml-footerTitle ml-footerTitle--pb-10">SUIVEZ NOUS</p>
+                    <div class="ml-socialIcons ml-socialIcons--pb-30 ml-socialIcons--size17">
+                        <a href="https://www.facebook.com/Noc-Doc-355035692436604"  target="_blank"><span class="ml-socialIcons__item ml-icon-facebook ml-socialIcons__item--light"></span></a>
+                        <span class="ml-socialIcons__item ml-icon-instagram ml-socialIcons__item--light"></span>
+                    </div><!--/.ml-socialIcons-->
+                </div><!--/.col-sm-3 col-md-3-->
+
+            </div><!--/.row-->
+        </div><!--/.ml-container container-->
+    </footer>
+
+</div><!--/.page_wrapper-->
+
+<a href="#" class="totop">TOP</a> <!--/.totop -->
+{% block javascripts %}
+
+{% endblock %}
+<script src="//code.jquery.com/jquery.js"></script>
+<script src="{{ asset('bundles/mercuryseriesflashy/js/flashy.js') }}"></script>
+{{ include('@MercurySeriesFlashy/flashy.html.twig') }}
+<script src="{{ asset('distClient/js/plugins/jquery-3.1.1.min.js')}}"></script>
+<script src="{{ asset('distClient/js/plugins/bootstrap.min.js')}}"></script>
+<script src="{{ asset('distClient/js/plugins/jquery.countTo.js')}}"></script>
+<script src="{{ asset('distClient/addons/slick/slick.js')}}"></script>
+<script src="{{ asset('distClient/addons/Magnific-Popup/jquery.magnific-popup.js')}}"></script>
+<script src="{{ asset('distClient/addons/masonry/masonry.pkgd.min.js')}}"></script>
+<script src="{{ asset('distClient/addons/datepicker/js/datepicker.js')}}"></script>
+<script src="{{ asset('distClient/addons/datepicker/js/main.js')}}"></script>
+<script src="{{ asset('distClient/js/script.js')}}"></script>
+<script src="https://kit.fontawesome.com/2652ac008c.js" crossorigin="anonymous"></script>
+<script>
+    $(function() {
+        $('[data-toggle={{ asset('datepicker')}}]').datepicker({
+            autoHide: true,
+            zIndex: 2048
+        });
+    });
+</script>
+</body>
+</html>

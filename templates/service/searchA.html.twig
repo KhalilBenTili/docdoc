@@ -1,0 +1,41 @@
+<p {% if services|length==0 %}>nothing up to data </p>
+{% else %}
+    <div class="row">
+        {% for s in services %}
+            <div class=" flex col-md-6 col-sm-6" >
+                <div class=" card bg-light">
+                    <div class="card-header text-muted border-bottom-0">
+                        Categorie : {{ s.categorie.libelle }}
+                    </div>
+                    <div class="card-body pt-0">
+                        <div class="row">
+                            <div class="col-7">
+                                <h2 class="lead"><b>libelle : {{ s.libelle }}</b></h2>
+                                <a href="" class="text-muted text-sm"><b>fournisseurs </b> </a>
+                                <ul class="ml-4 mb-0 fa-ul text-muted">
+                                    {% for f in s.fournisseurs %}
+                                        <a href=><li><span  class="fa-li"> <i class="fas fa-user "></i></span>
+                                                {{ f.fourniseur }}
+                                            </li></a>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="col-5 text-center">
+                                <img src={{ asset("distAdmin/img/docdoc.png") }} alt="" class="img-circle img-fluid">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="text-right">
+                            <a href="{{ path('detailservice',{'id':s.id}) }}" class="btn btn-sm" style=" color:white;background-color:#0097a7 ">
+                                <i class="fas fa-asterisk"></i>details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        {% endfor %}
+
+
+{% endif %}

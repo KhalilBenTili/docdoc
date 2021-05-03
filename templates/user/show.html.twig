@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="ml-blogComments">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <h4 class="ml-blogComments__title">Vos réclamations</h4>
+                <div class="ml-comments">
+                    <div class="ml-comments__item">
+                        {% for i in rec %}
+                        <div class="ml-comments__container ml-imageBox ml-imageBox--detailsHover ml-imageBox--hasShadow ml-imageBox--mb-40">
+                            <span class="ml-comments__author">Motif : {{ i.motif }}</span>
+                            <div class="ml-comments__text">
+                                <p>Déscription : {{ i.description }}</p>
+                                <div class="ml-comments__replyWrapp">
+
+                                    {% if i.etat %}
+                                        <span class="ml-comments__icon "><i class="fas fa-check-circle" style="color: #00ff80;font-size: x-large"></i></span>
+                                        <span class="ml-comments__reply">traitée</span>
+                                    {% else %}
+                                        <span class="ml-comments__icon "><i class="fas fa-spinner" style="color: #00ff80;font-size: x-large"></i></span>
+                                        <span class="ml-comments__reply">En cours</span>
+                                    {% endif%}
+                                </div><!--/.ml-comments__replyWrapp-->
+                            </div>
+
+                        </div><!--/.ml-comments__container-->
+                        {% endfor %}
+                        <!--/.ml-comments__children-->
+                    </div><!--/.ml-comments__item-->
+                    <!--/.ml-comments__item-->
+                </div><!--/.ml-comments-->
+
+                <!--/.ml-comments__message-->
+            </div>
+            <div class="col-md-3"></div>
+        </div><!--/.row-->
+    </div>
+
+{% endblock %}
+

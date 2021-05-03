@@ -1,0 +1,45 @@
+{% extends 'baseBack.html.twig' %}
+{% block contentMain %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+</head>
+
+
+
+<body>
+<div class="card-body">
+    <table id="demo-foo-addrow" class="table m-t-30 table-hover contact-list" data-page-size="10">
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Prenom</th>
+            <th>Adresse</th>
+            <th>Numero</th>
+            <th>Type</th>
+            <th>Prix</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody id="myTable">
+        <tr {% for p in repo %}>
+            <td>{{ p.nom }}</td>
+            <td>{{ p.prenom }}</td>
+            <td>{{ p.adresse }}</td>
+            <td>{{ p.numero }}</td>
+            <td>{{ p.type }}</td>
+            <td>{{ p.prix }}</td>
+            <td>{{ p.status }}</td>
+        </tr {% endfor %}>
+        </tbody>
+    </table>
+</div>
+
+
+</body>
+</html>
+{% endblock %}

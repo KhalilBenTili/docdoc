@@ -1,0 +1,9 @@
+{% extends 'baseBack.html.twig' %}
+{% block title %}Gestion Articles{% endblock %}
+{% block contentHeader %} Modifier l'article {% endblock %}
+{% block contentMain %}
+    {{ include('article/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('affichercatarticle') }}">back to list</a>
+
+    {% endblock %}

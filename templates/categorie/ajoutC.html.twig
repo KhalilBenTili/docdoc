@@ -1,0 +1,14 @@
+{% extends 'baseBack.html.twig' %}
+  {% block contentMain%}
+    <div class="card card-primary">
+
+    </div>
+
+    <h2>FORMULAIRE D'AJOUT</h2>
+
+    <th>{{ form_start(form,{'attr': {'novalidate': 'novalidate'}} ) }}
+        {# {{ form_label(form.Reference,"Reference") }}
+           {{ form_widget(form.Reference) }}#}
+        {{ form_end (form) }}</th>
+    <a href="{{ path('afficheC') }}">Liste categories</a>
+{% endblock %}

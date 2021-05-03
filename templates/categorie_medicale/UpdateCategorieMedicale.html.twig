@@ -1,0 +1,86 @@
+{% extends 'baseback.html.twig' %}
+{% block contentMain %}
+    <section class="content">
+        <div class="row">
+            <div class="col-12">
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Ajouter Catégorie</h3>
+                    </div>
+                    <div class="card-body">
+                        {{ form(form) }}
+                    </div>
+
+
+                    </br>
+
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Liste des Catégories Médicale</h3>
+        </div>
+
+        <!-- /.card-header -->
+        <div class="card-body">
+            <table id="example1" class="table table-bordered table-hover">
+                <script>
+                    $(function () {
+
+                        $('#example1').DataTable({
+                            "paging": true,
+                            "lengthChange": false,
+                            "searching": false,
+                            "ordering": true,
+                            "info": true,
+                            "autoWidth": false,
+                            "responsive": true,
+                        });
+                    });
+                </script>
+                <thead>
+                <tr>
+                    <th>id Catégorie</th>
+                    <th>Nom Catégorie</th>
+                    <th>Modifier</th>
+                    <th>Supprimer</th>
+
+                </tr>
+                </thead>
+                <tbody id="myTable">
+                {% for c in categorieMedicale %}
+                    <tr>
+                        <td>  {{ c.id }}  </td>
+                        <td>  {{ c.nom }} </td>
+                        <td><a href="{{ path('updateCatMedicale',{'id':c.id}) }}">Modifier</a></td>
+                        <td><a href="{{ path('suppCatMedicale',{'id':c.id}) }}">Supprimer</a></td>
+                    </tr>
+                {%  endfor %}
+                </tbody>
+            </table>
+
+        </div>
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+    <script src="../../plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- bs-custom-file-input -->
+    <script src="../../plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="../../dist/js/adminlte.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="../../dist/js/demo.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            bsCustomFileInput.init();
+        });
+    </script>
+
+{% endblock %}

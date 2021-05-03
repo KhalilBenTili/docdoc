@@ -1,0 +1,103 @@
+    {% extends 'baseBack.html.twig' %}
+
+    {% block contentHeader %}
+
+        <!doctype html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport"
+                  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Esprit{% block title %}{% endblock %}</title>
+
+
+        </head>
+
+        <body>
+
+        <h1> Liste des reclamations</h1>
+        <input id="search" class="form-control mr-sm-2" type="text" name="search" placeholder="Search ..." aria-label="Search"  style="margin-bottom: 30px">
+        <div  id="sa">
+            <script src="{{ asset('distAdmin/js/jquery.min.js') }}"></script>
+        <br>
+        <div class="card-body">
+            <table id="demo-foo-addrow" class="table m-t-30 table-hover contact-list" data-page-size="10">
+                <thead>
+                <tr>
+                    <th style="width: 10px">Id</th>
+                    <th>Motif</th>
+                    <th>Description</th>
+                    <th>Utilisateur</th>
+                    <th>Répondre</th>
+                    <th style="width: 60px">Supprimer</th>
+                </tr>
+                </thead>
+                <tbody id="myTable">
+                {% for i in reclamation  %}
+                <tbody id="myTable">
+                    <tr>
+                        <td>{{ i.id }}</td>
+                        <td>{{ i.motif }}</td>
+                        <td>{{ i.description }}</td>
+                        <td>{{ i.user.email }}</td>
+                        <td><a  href="{{ path('contact',{'id':i.id}) }}"><i class="far fa-envelope"></i></a><td>
+
+                            <a href="{{ path('Supprimer',{'id':i.id}) }}">
+
+                                <i class="far fa-trash-alt"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+                {% endfor %}
+
+                <tfoot>
+                <td colspan="7">
+                    <div class="text-right">
+                        <ul class="pagination"> </ul>
+                    </div>
+                </td>
+                </tr>
+                </tfoot>
+            </table>
+            <script>
+
+                $(document).ready(function(){
+                    $('#search').keyup(function(){
+                        search_table($(this).val());
+                    });
+                    function search_table(value){
+                        $('#sa tbody').each(function(){
+                            var found = 'false';
+                            $(this).each(function(){
+                                if($(this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0)
+                                {
+                                    found = 'true';
+                                }
+                            });
+                            if(found == 'true')
+                            {
+                                $(this).show();
+
+                            }
+                            else
+                            {
+                                $(this).hide();
+
+                            }
+                        });
+                    }
+                });
+            </script>
+
+        </div>
+      </div>
+        <div class="pagination">
+            {{ knp_pagination_render(reclamation) }}
+        </div>
+
+
+        </body>
+        </html>
+    {% endblock %}

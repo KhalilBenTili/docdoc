@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<table border="1">
+    <tr>
+        <th>
+            id Consultation
+        </th>
+        <th>
+            Date Consultation
+        </th>
+
+        <td>
+            Modifier
+        </td>
+        <td>
+            Supprimer
+        </td>
+    </tr>
+    {% for c in consultation %}
+        <tr>
+            <td>  {{ c.id }}  </td>
+            <td>  {{ c.datehr|date("d-m-Y H:i") }} </td>
+
+
+            <td><a href="{{ path('UpdateConsultation',{'id':c.id}) }}">Modifier</a></td>
+            <td><a href="{{ path('suppConsultation',{'id':c.id}) }}">Supprimer</a></td>
+        </tr>
+    {%  endfor %}
+</table>
+
+</body>
+</html>

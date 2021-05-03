@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+{% block javascripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $( document ).ready(function() {
+            var currentRequest = null;
+            $("#search").keyup(function(e){
+
+                var value = $(this).val();
+                if(currentRequest != null) {
+                    currentRequest.abort();
+                }
+
+                currentRequest = $.ajax({
+
+                    url : "{{ path('searchServices') }}",
+                    type : 'GET',
+                    data: {
+                        'searchValue' : value
+                    },
+
+                    success : function(retour)
+                    {
+                        $('#all').html(retour);
+
+                    },
+                });
+                return false;
+            });
+        });
+        $( document ).ready(function() {
+            var currentRequest = null;
+            $("#tri").change(function(){
+                var value = null;
+                $( "select option:selected" ).each(function() {
+                    value = $( this ).val() ;
+                });
+                if(currentRequest != null) {
+                    currentRequest.abort();
+                }
+
+                currentRequest = $.ajax({
+
+                    url :"{{ path('triservice') }}",
+                    type : 'GET',
+                    data: {
+                        'triValue' : value
+                    },
+
+                    success : function(retour)
+                    {
+                        $('#all').html(retour);
+
+                    },
+                });
+                return false;
+            });
+        });
+    </script>
+{% endblock  %}
+{%  block body  %}
+    <div class="ml-servicesCategories">
+        <div class="ml-container container">
+            <div class="ml-shopbar" style="background: #00cfa1">
+                <div class="ml-shopbar__item">
+                    <p class="ml-shopbar__title">SERVICES</p>
+                </div>
+                <div class="ml-shopbar__item">
+                    <div class="ml-shopbar__filter">
+                            <label class="ml-shopbar__filterLabel" for="ml-shopbar__select1">TRI AVEC:</label>
+                            <select id="tri" class="ml-shopbar__select" name="tri">
+                                <option>tri avec</option>
+                                <option value="1">LIBELLE</option>
+                                <option selected>STARS</option>
+                                <option value="2">PRIX</option>
+                            </select>
+                    </div><!--/.ml-shopbar__filter-->
+
+                    <div class="ml-shopbar__filter">
+                        <div class="ml-shopbar__display">
+                                <input class="ml-search__input" id="search" type="text" placeholder="SEARCH ...">
+                                <a  path="{{ path('searchServices') }}" class="ml-search__submit glyphicon glyphicon-search"  value="go"></a>
+                        </div><!--/.ml-shopbar__display-->
+                    </div><!--/.ml-shopbar__filter-->
+                </div><!--/.ml-shopbar__item-->
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <h6 class="ml-servicesCategories__title">SERVICES</h6>
+                    <div class="row" id="all">
+                        {% include 'service/filter.html.twig' %}
+
+                    </div><!--/.row-->
+                </div><!--/.col-md-12 col-sm-12-->
+            </div><!--/.row-->
+        </div><!--/.ml-container container-->
+    </div>
+
+{% endblock %}

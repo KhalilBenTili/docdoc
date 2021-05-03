@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="ml-contactSection">
+        <div class="ml-container container">
+            <div class="row">
+                <div class="col-sm-8 col-md-8">
+                    <div class="ml-appointment__box ml-appointment__box--style2">
+                        <div class="col-sm-12 col-md-12">
+                            <h2 class="ml-appointment__title ml-appointment__title--style2 ml-appointment__title--pb-30">Ajouter un produit</h2>
+                            <p class="ml-appointment__text"></p>
+
+
+                            {{ form_start(form,{'attr': {'novalidate': 'novalidate'}} ) }}
+                            {{ form_widget(form) }}
+                            {# <button class="btn">{{ button_label|default('Save') }}</button> #}
+
+                            {{ form_end (form) }}
+                            <br>
+                            <a href="{{ path('afficheProduit') }}" class="btn btn-success float-right">Liste produits</a>
+
+                        </div><!--/.col-sm-12 col-md-12-->
+
+                    </div><!--/.ml-appointment__box-->
+                </div><!--/.col-sm-8 col-md-8-->
+            </div><!--/.row-->
+        </div><!--/.ml-container container-->
+    </div><!--/.ml-contactSection-->
+
+{% endblock %}

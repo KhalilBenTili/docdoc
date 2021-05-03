@@ -1,0 +1,125 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block head %}
+
+    <link rel="stylesheet" href={{ asset("distClient/css/font-awesome.css")}}>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script> {% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row bootstrap snippets bootdeys">
+            <div class="col-md-8 col-sm-12">
+                <div class="comment-wrapper">
+
+                    <h3>Titre de la question: {{ q.titre }}</h3>
+                    <a href="#" class="fa fa-heart-o " ></a>
+
+                    <br>
+                    <h5>la catégorie médicale de cette question est: {{  q.categorieMedicale.nom}}</h5>
+                    <h5>Symptomes:{{ q.symptomes }}</h5>
+
+                    <small>  {% if q.isTreated==0%}
+                            Pas de traitement en cours
+                        {% else %}
+                            traitement en cours
+                        {% endif %}
+
+
+                        <br>  {% if q.isAntMed==0%}
+                            Pas d'antécédent médicaux
+                        {% else %}
+                            il y a des antécédents médicaux
+                        {% endif %}
+
+                        </br>
+                        {% if q.taille==null%}
+
+                        {% else %}
+                            La taille du patient:{{ q.taille }} ,
+                        {% endif %}
+
+
+                        {% if q.poids==null%}
+
+                        {% else %}
+                            Le poids du patient:{{ q.poids }}
+                        {% endif %}
+                    </small>
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+
+                            Réponses ({{ q.reponses|length }})
+                        </div>
+                        <div class="panel-body">
+
+
+
+                            {{ form_start(form) }}
+                            {{ form_end(form) }}
+
+
+
+
+                            <div class="clearfix"></div>
+                            <hr>
+                            <ul class="media-list">
+                                {% for c in q.reponses %}
+                                    <li class="media">
+                                        <a href="#" class="pull-left">
+                                            <img src="https://bootdey.com/img/Content/user_1.jpg" alt="" class="img-circle">
+                                        </a>
+                                        <div class="media-body">
+                                <span class="text-muted pull-right">
+                                    <small class="text-muted">30 min ago</small>
+                                </span>
+                                            <strong class="text-success">{{ c.user.id }}</strong>
+                                            <p>
+                                                {{ c.description }}
+                                                <br>
+                                                <a href="{{ path('updateReponse',{'id':c.id}) }}">Modifier</a>
+                                                <a href="{{ path('suppReponse',{'id':c.id}) }}">Supprimer</a>
+                                            </p>
+                                        </div>
+                                    </li>
+
+                                {% endfor %}
+                            </ul>
+
+
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block css %}
+
+    <style>
+
+
+        .comment-wrapper .panel-body {
+            max-height:650px;
+            overflow:auto;
+        }
+
+        .comment-wrapper .media-list .media img {
+            width:64px;
+            height:64px;
+            border:2px solid #e5e7e8;
+        }
+
+        .comment-wrapper .media-list .media {
+            border-bottom:1px dashed #efefef;
+            margin-bottom:25px;
+        }
+    </style>
+{% endblock %}

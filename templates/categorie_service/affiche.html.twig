@@ -1,0 +1,79 @@
+{% extends 'baseBack.html.twig' %}
+{% block title %}Gestion Categorie service{% endblock %}
+{% block contentHeader %} Catégories Services {% endblock %}
+{% block js %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $( document ).ready(function() {
+            var currentRequest = null;
+            $("#search").keyup(function(e){
+
+                var value = $(this).val();
+                if(currentRequest != null) {
+                    currentRequest.abort();
+                }
+
+                currentRequest = $.ajax({
+
+                    url : "{{ path('searchCategorie') }}",
+                    type : 'GET',
+                    data: {
+                        'searchValue' : value
+                    },
+
+                    success : function(retour)
+                    {
+                        $('#all').html(retour);
+
+                    },
+                });
+                return false;
+            });
+        });
+    </script>
+{% endblock  %}
+{% block  contentMain %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <a class="btn bg-gradient-info float-left " href="{{ path('Ajoutercatservice') }}">
+                        <i class="far fa-plus-square "> ajouter
+                        </i>
+
+                    </a>
+
+                    <div class="card-tools">
+                        <div class="input-group input-group-sm" style="width: 150px;">
+                            <input  type="search" id="search" class="form-control float-right" placeholder="Search">
+
+                            <div class="input-group-append">
+                                <a path="{{ path('searchCategorie') }}" class="btn btn-default"><i class="fas fa-search"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body table-responsive p-0" style="height: 300px;">
+                    <table class="table table-head-fixed text-nowrap">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>LIBELLE</th>
+
+                        </tr>
+                        </thead>
+                        <tbody id="all">
+                        {% include 'categorie_service/categories.html.twig' %}
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+{% endblock %}
+

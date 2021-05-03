@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+    {% block body %}
+    <table border="1">
+
+        <div class="ml-blogComments">
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    <h4 class="ml-blogComments__title">Vos Consultations</h4>
+                    <div class="ml-comments">
+                        <div class="ml-comments__item">
+                            {% for c in consultations %}
+
+                                <div class=" ml-imageBox ml-imageBox--detailsHover ml-imageBox--hasShadow ml-imageBox--mb-40" style="padding: 5px">
+                                    <span class="ml-comments__author">Cher patient(e){{ c.user.nom }} {{ c.user.prenom }}</span>
+                                    <div class="ml-comments__text">
+                                        <p>vous avez demandé une consultation le {{ c.datehr|date("d-m-Y H:i") }} avec docteur {{ c.userM.nom }} {{ c.userM.prenom }}</p>
+                                        <div class="ml-comments__replyWrapp">
+
+                                               {% if c.isAccepted==true %}
+                                                <span class="ml-comments__icon "><i class="fas fa-check-circle" style="color: #00ff80;font-size: x-large"></i></span>
+                                                <span class="ml-comments__reply">Accepté!</span>
+
+                                            {% else %}
+                                                <span class="ml-comments__icon "><i class="fas fa-spinner" style="color: #00ff80;font-size: x-large"></i></span>
+                                                <span class="ml-comments__reply">En Attente</span>
+                                                <span><a href="{{ path('UpdateConsultation',{'id':c.id , 'idUser':app.user.id}) }}"><i class="fas fa-edit"></i></a></span>
+                                                <span><a href="{{ path('suppConsultation',{'id':c.id, 'idUser':app.user.id}) }}"><i class="fas fa-trash"></i></a></span>
+                                            {% endif%}
+
+                                        </div><!--/.ml-comments__replyWrapp-->
+                                    </div>
+
+                                </div><!--/.ml-comments__container-->
+                            {% endfor %}
+                            <!--/.ml-comments__children-->
+                        </div><!--/.ml-comments__item-->
+                        <!--/.ml-comments__item-->
+                    </div><!--/.ml-comments-->
+                    <div>{{ knp_pagination_render(consultations) }}</div>
+
+
+                    <!--/.ml-comments__message-->
+                </div>
+                <div class="col-md-3"></div>
+            </div><!--/.row-->
+        </div>
+    </table>
+
+
+    {% endblock %}
+
+
+
+

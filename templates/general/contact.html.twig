@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="ml-subheader ml-blogSubheader ml-subheader--h590">
+        <img src="images/subheader4.jpg" alt="" class="ml-subheader__img">
+        <div class="ml-bg-overlay ml-bg-overlay--style2"></div>
+        <div class="ml-subheader__content ml-subheader__content--center">
+            <div class="container ml-container ml-text--center">
+                <h1 class="ml-subheader__title">CONTACTER NOUS</h1>
+                <p class="ml-subheader__subtitle ml-subheader__subtitle--pb-30">Cher patient Merci pour votre confiance</p>
+            </div><!--/.ml-container-->
+        </div><!--/.ml-subheader__content-->
+    </div>
+    <div class="ml-contactSection" id="ml-contactSection">
+        <div class="ml-container container">
+            <div class="row">
+                <div class="col-sm-5 col-md-5">
+                    <div class="ml-sidebar ml-sidebar--right ml-sidebar--w310">
+                        <!--/.ml-openingHours-->
+                        <div class="ml-addressBox">
+                            <p class="ml-addressBox__title">Address</p>
+                            <p class="ml-addressBox__address">1000 TUNISIE,ARIANA,ARIANA SOGHRA,GHAZELLA 1250</p>
+                            <p class="ml-addressBox__nr">+216 95 458 789 OU +216 71 000 111</p>
+                        </div><!--/.ml-addressBox-->
+
+                    </div><!--/.ml-sidebar-->
+                </div><!--/.col-sm-4 col-md-4-->
+                <div class="col-sm-7 col-md-7">
+                    <div class="ml-appointment__box ml-appointment__box--style2">
+                        <div class="col-sm-12 col-md-12">
+                            <h3 class="ml-appointment__title ml-appointment__title--style2 ml-appointment__title--pb-30">CONTACTEZ NOUS</h3>
+                        </div><!--/.col-sm-12 col-md-12-->
+                        {{ form(f) }}
+                    </div><!--/.ml-appointment__box-->
+                </div><!--/.col-sm-8 col-md-8-->
+            </div><!--/.row-->
+        </div><!--/.ml-container container-->
+    </div>
+
+{% endblock body %}
+{% block javascripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+   $(document).ready(function(){
+       $("#sujet").on('change',function(){
+           var sujet= $(this).val();
+           $("#services").hide();
+           if (sujet=='signaler un service' ||sujet=='rapport sur un service'){ $("#services").show(); }
+           else{ $("#services").hide(); }
+
+       });
+   }) ;
+
+</script>
+{% endblock javascripts %}

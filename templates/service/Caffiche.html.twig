@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+{%  block body  %}
+    <div class="ml-servicesCategories">
+        <div class="ml-container container">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <h6 class="ml-servicesCategories__title">SERVICES</h6>
+                    <div class="row">
+                        {% for service in services %}
+                        <div class="col-md-3 col-sm-6">
+                            <div class="ml-imageBox ml-imageBox--detailsHover ml-imageBox--hasShadow ml-imageBox--mb-40">
+                                <a class="ml-imageBox__anchor" href="{{ path('service',{'id':service.id}) }}">
+                                    <div class="ml-imageBox-wrapper">
+                                        <div class="ml-imageBox-imgWrapper">
+                                            <img src="{{ asset('distClient/img-assets/logo.png') }} " alt="">
+                                        </div>
+                                    </div><!--/.ml-imageBox-wrapper-->
+                                    <div class="ml-imageBox-details ml-text--center">
+                                        <h4 class="ml-imageBox-title">{{ service.libelle }}</h4>
+                                    </div><!--/.ml-imageBox-details-->
+                                </a><!--/.ml-imageBox__anchor-->
+                            </div><!--/.ml-imageBox-->
+                        </div><!--/.col-md-3 col-sm-6-->
+                        {% endfor %}
+
+
+
+
+                    </div><!--/.row-->
+                </div><!--/.col-md-12 col-sm-12-->
+            </div><!--/.row-->
+        </div><!--/.ml-container container-->
+    </div>
+
+{% endblock %}

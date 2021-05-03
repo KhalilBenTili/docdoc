@@ -1,0 +1,74 @@
+{% extends 'baseBack.html.twig' %}
+{% block title %}Gestion Categorie service{% endblock %}
+     {% block contentHeader %}
+  Détails catégorie
+     {% endblock %}
+{% block contentMain %}
+    <section class="content">
+
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Catégorie Détails</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                        <i class="fas fa-minus"></i></button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                        <i class="fas fa-times"></i></button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
+                        <div class="row">
+                            <div class="col-12 col-sm-4">
+                                <div class="info-box bg-light">
+                                    <div class="info-box-content">
+                                        <span class="info-box-text text-center text-muted">Services</span>
+                                        <span class="info-box-number text-center text-muted mb-0">{{ categorie.services|length }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-4">
+                                <div class="info-box bg-light">
+                                    <div class="info-box-content">
+                                        <span class="info-box-text text-center text-muted">Services</span>
+                                        <span class="info-box-number text-center text-muted mb-0">{{ categorie.services|length }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-4">
+                                <div class="info-box bg-light">
+                                    <div class="info-box-content">
+                                        <span class="info-box-text text-center text-muted">Nombre de commande</span>
+                                        <span class="info-box-number text-center text-muted mb-0">{{ 12 }} <span>
+                    </span></span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-12 row">
+                        <div class="col-md-6">
+                        <h3 class="text-primary"><i class="fas fa-paint-brush"></i>{{categorie.libelle }}</h3>
+                        <p class="text-muted">{{ categorie.description }}</p>
+                        </div>
+                        <div class="col-md-6">
+                        <h4 class="mt-5 ">services</h4>
+                        <ul {% for s in categorie.services %} class="ml-programList--style1" >
+                            <li>
+                                <span class="btn-link text-secondary"><i class="far fa-user"></i>{{ s.libelle }}</span>
+                            </li>
+
+                        </ul {% endfor %}>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+
+    </section>
+{% endblock %}

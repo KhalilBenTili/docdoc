@@ -1,0 +1,39 @@
+{% extends 'baseBack.html.twig' %}
+{% block title %}Gestion Categorie service{% endblock %}
+{% block contentHeader %} Modifier Catégorie {% endblock %}
+{%  block contentMain  %}
+    <style>
+        .card-primary:not(.card-outline)>.card-header{
+            background-color: #00cfa1;
+        }
+    </style>
+    {{ form_start(f) }}
+    <div class="card-primary " >
+        <div class="card-header">
+            <h3 class="card-title">ajouter catégorie</h3>
+
+
+        </div>
+        <div class="card-body">
+            <div class="form-group">
+                {{ form_label(f.libelle,"Libélle") }}
+                {{ form_widget(f.libelle,{'attr':{'id':"libelle",'class':"form-control"}}) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(f.description,"Déscription") }}
+                {{ form_widget(f.description,{'attr':{'id':"description",'class':"form-control"}}) }}
+
+            </div>
+
+
+
+        </div>
+        <!-- /.card-body -->
+
+        <div class="card-footer">
+            <button type="submit" class="btn btn-secondary float-lg-right">modifier</button>
+        </div>
+    </div>
+    {{ form_end(f) }}
+
+{% endblock %}

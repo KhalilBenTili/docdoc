@@ -1,0 +1,40 @@
+{% extends 'baseBack.html.twig' %}
+  {% block contentMain%}
+    <h2>Produits</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Reference</th>
+            <th>Nom</th>
+            <th>Prix</th>
+            <th>Quantité</th>
+            <th>Catégorie</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for p in produit %}
+            <tr>
+                <td>{{ p.reference }}</td>
+                <td>{{ p.nom }}</td>
+                <td>{{ p.prix }}</td>
+                <td>{{ p.quantite }}</td>
+                <td>{{ p.categorie }}</td>
+                <td>{{ p.description }}</td>
+                <td>{% for image in p.images %}
+
+                        <img src="{{ asset ('/uploads/images/' ~ image.nom ) }}"
+                             alt="image" width="150">
+                    {% endfor %}
+                </td>
+                <td><a href="{{ path('deleteCP',{'id':p.id}) }}">Supprimer</a></td>
+
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

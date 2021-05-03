@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+    <br>
+    <br>
+    <div align="center" class=" table table-responsive">
+        <table >
+            <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Adresse</th>
+                <th>Numero</th>
+                <th>Type</th>
+                <th>Prix</th>
+                <th>Status</th>
+                <th>Supprimer</th>
+            </tr>
+            </thead>
+            <tbody >
+            <tr {% for p in repo %}>
+                <td>{{ p.nom }}</td>
+                <td>{{ p.prenom }}</td>
+                <td>{{ p.adresse }}</td>
+                <td>{{ p.numero }}</td>
+                <td>{{ p.type }}</td>
+                <td>{{ p.prix }}</td>
+                <td>{{ p.status }}</td>
+                <td align="center">
+                    <a href="{{ path('remove', {'id': p.id}) }}" class="btn btn-danger glyphicon glyphicon-trash btn-sm">
+                        <i class="fas remove"></i>
+                    </a>
+                </td>
+            </tr {% endfor %}>
+            </tbody>
+        </table>
+        <br>
+        <br>
+        <a href="{{ path('panier') }}" class="ml-btnSlider hasAnchor">RETOUR</a>
+    </div>
+
+
+{% endblock %}

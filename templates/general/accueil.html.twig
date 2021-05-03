@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<div class="ml-slider slick-initialized slick-slider " style="height: 450px">
+
+                <img src="{{ asset('distClient/images/slide2.jpg')}}" height="50" width="50" alt="...">
+
+</div>
+    <div>
+    {% include 'general/app.html.twig' %}
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAvwvfL7w7EafUQUsOVB9UDXtPDWnn2KAQ&callback=initMap&libraries=&v=weekly"
+            async></script>
+    <script>
+    let map;
+
+    function initMap() {
+    var options={
+    center:{lat:33.8869,lng:9.5375},
+    zoom:8
+    }
+    map = new google.maps.Map(document.getElementById("map"), options);
+    }
+    </script>
+{% endblock %}

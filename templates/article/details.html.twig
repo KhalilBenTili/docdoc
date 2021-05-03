@@ -1,0 +1,15 @@
+{% extends 'baseBack.html.twig' %}
+{% block title %}Gestion Article {% endblock %}
+{% block contentHeader %} Détails Article {% endblock %}
+{% block contentMain %}
+    <table class="table table-head-fixed text-nowrap">
+       <td> {{ article.id }}</td>
+
+       <td> {{ article.titre }}</td>
+       <td> {{ article.contenu |raw  }}</td>
+
+
+    </table>
+    <a href="{{ path('affichercatarticle') }}">back to list</a>
+
+{% endblock %}

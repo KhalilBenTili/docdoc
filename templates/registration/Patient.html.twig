@@ -1,0 +1,100 @@
+{% extends 'baseLR.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block asideright %}
+    <span class="login100-form-title p-b-43">
+        Modifier patient</span>
+
+    {{ form_start(form) }}
+    {{form_row(form.numtel)}}
+    {{ form_row(form.adresse)}}
+    {#<div ><B>
+        {{ form_label(form.numtel,"Numéro de téléphone : ") }}</B></div>
+    <div class="wrap-input100 validate-input">
+        <input class="input100" type="text" id="{{form_widget(form.numtel)}}" >
+        <span class="focus-input100"></span>#}
+        {#<span class="label-input100">Numéro de télephone</span>#}{#
+
+    </div >
+    <div ><B>
+    {{ form_label(form.adresse,"Votre Adresse : ") }}</B></div>
+    <div class="wrap-input100 validate-input" >
+
+        <input class="input100" type="text" id="{{ form_widget(form.adresse) }}">
+        <span class="focus-input100"></span>
+       #}{# <span class="label-input100">Votre adresse</span>#}{#
+    </div>
+
+#}
+    {#<div class="flex-sb-m w-full p-t-3 p-b-32">#}
+        <div class="container-login100-form-btn">
+            <button class="login100-form-btn" type="submit" >
+                Confirmer
+            </button>
+        </div>
+    {#    <div class="container-login100-form-btn">
+            <button class="login100-form-btn" type="reset" >
+                Annuler
+            </button>
+        </div>
+    </div>#}
+
+  {#  <div class="login100-form-social flex-c-m">
+        <a href="#" class="login100-form-social-item flex-c-m bg1 m-r-5">
+            <i class="fa fa-facebook-f" aria-hidden="true"></i>
+        </a>
+
+        <a href="#" class="login100-form-social-item flex-c-m bg2 m-r-5">
+            <i class="fa fa-twitter" aria-hidden="true"></i>
+        </a>
+    </div>#}
+    {{ form_end(form) }}
+    {#<form class="login100-form validate-form" name='form' method="post">
+					<span class="login100-form-title p-b-43">
+						Modifier délegué
+					</span>
+
+
+        <div class="wrap-input100 validate-input">
+            <input class="input100" type="text" name="numtel">
+            <span class="focus-input100"></span>
+            <span class="label-input100">Numéro de télephone</span>
+        </div>
+
+
+        <div class="wrap-input100 validate-input" >
+            <input class="input100" type="text" name="adresse">
+            <span class="focus-input100"></span>
+            <span class="label-input100">Votre adresse</span>
+        </div>
+
+
+        <div class="flex-sb-m w-full p-t-3 p-b-32">
+            <div class="container-login100-form-btn">
+                <button class="login100-form-btn" type="submit" >
+                    Confirmer
+                </button>
+            </div>
+            <div class="container-login100-form-btn">
+                <button class="login100-form-btn" type="reset" >
+                    Annuler
+                </button>
+            </div>
+        </div>
+
+        <div class="login100-form-social flex-c-m">
+            <a href="#" class="login100-form-social-item flex-c-m bg1 m-r-5">
+                <i class="fa fa-facebook-f" aria-hidden="true"></i>
+            </a>
+
+            <a href="#" class="login100-form-social-item flex-c-m bg2 m-r-5">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+        </div>
+    </form>#}
+
+
+{% endblock %}
+
+

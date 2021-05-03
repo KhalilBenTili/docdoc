@@ -1,0 +1,50 @@
+<form id="search-form" class="example-wrapper" role="search" method="get" action="{{ path('search') }}">
+    <div>
+        <input type="text" class="form-control" name="search">
+        <button type="submit" class="btn btn-success" name="sub">search</button>
+    </div>
+</form>
+
+<div id="search-results" class="example-wrapper"></div>
+
+<script type="text/javascript">
+
+    jQuery(document).ready(function($){
+
+        $('#search-form').submit(function(e){
+
+            e.preventDefault();
+            $('#search-results').html("");
+
+            $.get("{{ path('search') }}/" + input, function(data, textStatus, xhr){
+
+                if ("object" !== typeof data || null === data) {
+                    alert("Unexpected response from server.");
+                    return;
+                }
+
+                if (!data.hasOwnProperty("html") || typeof data.html != "string" || (data.html = data.html.trim()).length < 1) {
+                    alert("Empty response from server.");
+                    return;
+                }
+
+                $('#search-results').html(data.html);
+
+            }).fail(function(xhr, textStatus, errorThrown){
+
+                var error = "Unknown error occurred.";
+                if ("object" === typeof xhr && null !== xhr && xhr.hasOwnProperty("responseJSON") && "object" === typeof xhr.responseJSON && xhr.responseJSON.hasOwnProperty("error") && "string" === typeof xhr.responseJSON.error && xhr.responseJSON.error.trim().length >= 1) {
+                    error = xhr.responseJSON.error.trim();
+                } else if ("string" === typeof errorThrown && errorThrown.trim().length >= 1) {
+                    error = errorThrown.trim();
+                }
+
+                alert(error);
+
+            });
+
+        });
+
+    });
+
+   </script>

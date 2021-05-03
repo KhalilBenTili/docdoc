@@ -1,0 +1,173 @@
+{% extends 'base.html.twig' %}
+    {% block body %}
+        <!-- Subheader start -->
+        <div class="ml-subheader ml-blogSubheader ml-subheader--h590">
+            <img src="images/subheader3.jpg" alt="" class="ml-subheader__img">
+            <div class="ml-bg-overlay ml-bg-overlay--style2"></div>
+            <div class="ml-subheader__content ml-subheader__content--center">
+                <div class="container ml-container ml-text--center">
+                    <h1 class="ml-subheader__title">MEDLIFE BLOG</h1>
+                    <p class="ml-subheader__subtitle">Let’s see if you can read</p>
+                </div><!--/.ml-container-->
+            </div>
+        </div><!--/.ml-subheader-->
+        <!-- Subheader end -->
+
+
+{#                        <div class="ml-gridGallery">#}
+{#                            <div class="row">#}
+{#                                <div class="ml-gridItem__Wrapp col-sm-12 col-md-12">#}
+{#                                    <div class="ml-gridItem ml-text--center">#}
+{#                                        <h1 class="ml-gridItem__title">{{top[0].titre}}</h1>#}
+{#                                        <p class="ml-gridItem__details">{{top[0].createdat|date('Y-m-d H:i:s') }} </p>#}
+{#                                        <a href="blog-single.html" class="ml-gridItem-link ml-gridItem--h0 ml-zoom--on">#}
+{#                                            <div class="ml-gridImg-wrapper ml-gridImg-wrapper">#}
+{#                                                <img class="ml-gridImg" src="{{ vich_uploader_asset(top[0], 'imageFile') }}" alt="">#}
+{#                                            </div>#}
+{#                                            <i class="ml-icon glyphicon glyphicon-search ml-circled-icon"></i>#}
+{#                                        </a><!--/.ml-gridItem-link-->#}
+{#                                        <p class="ml-gridItem__description">{{ top[0].contenu|slice(0,40) | raw}}</p>#}
+{#                                        <div class="ml-separator--style2"></div>#}
+{#                                    </div><!--/.ml-gridItem-->#}
+{#                                </div><!--/.ml-gridItem__Wrapp-->#}
+{#                            </div><!--row-->#}
+{#                        </div><!--/.ml-gridGallery-->#}
+        <div class="ml-blogSection">
+
+            <div class="ml-container">
+                <div class="row">
+                    <div class="col-md-8 col-sm-8">
+                        <div class="ml-gridGallery">
+                            <div class="row">
+                                <div class="ml-gridItem__Wrapp col-sm-12 col-md-12">
+                                    <div class="ml-gridItem ml-text--center">
+                                        <h1 class="ml-gridItem__title">{{top[0].titre}}</h1>
+                                        <p class="ml-gridItem__details">{{top[0].createdat|date('Y-m-d H:i:s') }} </p>
+                                        <a href="{{ path('catarticle',{'id':top[0].id ,  'user_id':app.user.id} )}}" class="ml-gridItem-link ml-gridItem--h0 ml-zoom--on">
+                                            <div class="ml-gridImg-wrapper ml-gridImg-wrapper">
+                                                <img class="ml-gridImg" src="{{ vich_uploader_asset(top[0], 'imageFile') }}" alt="">
+                                            </div>
+                                            <i class="ml-icon glyphicon glyphicon-search ml-circled-icon"></i>
+                                        </a><!--/.ml-gridItem-link-->
+                                        <p class="ml-gridItem__description">{{ top[0].contenu|slice(0,200) | raw}}</p>
+                                        <div class="ml-separator--style2"></div>
+                                    </div><!--/.ml-gridItem-->
+                                </div><!--/.ml-gridItem__Wrapp-->
+                            </div><!--row-->
+
+                        <div class="ml-separator--style1"></div>
+                        </div>
+{#                        <div class="ml-shopbar__item">#}
+{#                            <div class="ml-shopbar__filter">#}
+{#                                <form action="" method="get">#}
+{#                                    <label class="ml-shopbar__filterLabel" for="ml-shopbar__select1"></label>#}
+{#                                    <form method="post" action="{{ path('triArticle') }}" align="center">#}
+{#                                        <label>#}
+{#                                            <select name="tri">#}
+{#                                                <option value="">veuillez Choisir</option>#}
+{#                                                <option value="A-Z">Titres A-Z</option>#}
+{#                                                <option value="Z-A">Tires Z-At</option>#}
+
+{#                                            </select>#}
+{#                                        </label>#}
+{#                                        <input type="submit" class="btn btn-primary btn-bottom" value="Trier" />#}
+
+{#                                    </form>#}
+{#                                </form>#}
+{#                            </div><!--/.ml-shopbar__filter-->#}
+{#                        </div>#}
+                        <div class="ml-gridGallery" style="position: relative">
+                             <div class="row">
+                                {%for article in articles %}
+                                <div class="ml-gridItem__Wrapp col-sm-6 col-md-6">
+                                    <div class="ml-gridItem ml-text--center">
+
+                                            <h2 class="ml-gridItem__title ml-gridItem__title--style2 ml-gridItem__title--plr-50">{{article.titre}}</h2>
+                                            <h6 >nombre de vues : {{article.nbvue}}</h6>
+                                            <p class="ml-gridItem__details ml-gridItem__details--pt-20">{{ article.createdat|date('Y-m-d H:i:s') }} </p>
+                                            <a href="{{ path('catarticle',{'id':article.id  , 'user_id':app.user.id} )}}" class="ml-gridItem-link ml-gridItem--h4 ml-zoom--on">
+                                                <div class="ml-gridImg-wrapper">
+
+                                                    <tr>
+                                                        <td><img src="{{ vich_uploader_asset(article, 'imageFile') }}" alt="{{ article.imageName }}" /></td>
+                                                    </tr>
+                                                </div>
+                                                <i class="ml-icon glyphicon glyphicon-search ml-circled-icon"></i>
+                                            </a><!--/.ml-gridItem-link-->
+                                            <p class="ml-gridItem__description">{{ article.contenu|slice(0,200) | raw}}</p>
+                                        <div class="ml-separator--style2"></div>
+
+
+
+                                        </div><!--/.ml-gridItem-->
+                                    </div><!--/.ml-gridItem__Wrapp-->
+                                {% endfor %}
+                                <div class="ml-separator--style2"></div>
+
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12">
+                                <div class="ml-loadMore">
+
+
+                                    <a  > {{ knp_pagination_render(articles) }}</a>
+                                </div><!--/.ml-loadMore-->
+                            </div><!--/.col-md-12 col-sm-12-->
+                        </div><!--/.row-->
+                    </div>
+
+                    <div class="col-md-4 col-sm-4">
+                        <div class="ml-sidebar ml-sidebar--right ml-sidebar--mt-20">
+                            <div class="ml-categoriesList-wrapper ml-text--center">
+
+                                <h4 class="ml-categoriesList__title">CATEGORIES</h4>
+                                {%for categorie in categories%}
+
+                                <ul class="ml-categoriesList">
+                                    <li class="ml-categoriesList__item"><a href="#"><span>{{categorie.nom}}</span></a></li>
+
+                                    {% endfor %}
+                                </ul>
+                            </div>
+
+
+                            <div class="ml-sidebar__iconbox">
+                                <p class="ml-sidebar__title ml-sidebar__title--pb-20 ml-text--center">Suivez-nous</p>
+                                <div class="ml-socialIcons ml-socialIcons--centerFlex ml-socialIcons--style2">
+                                    <span class="ml-socialIcons__item ml-icon-facebook"></span>
+                                    <span class="ml-socialIcons__item ml-icon-twitter"></span>
+                                    <span class="ml-socialIcons__item ml-icon-instagram2"></span>
+                                </div><!--/.ml-socialIcons-->
+                            </div><!--/.ml-sidebar__iconbox-->
+
+
+                            <div class="ml-featuredBox">
+                                <p class="ml-sidebar__title ml-text--center ml-sidebar__title--pb-25">les articles à la une</p>
+                                <div class="ml-featuredBox__item ml-text--center">
+                                    <span class="ml-featuredBox__nr">1</span>
+                                    <p class="ml-featuredBox__text">{{top[0].titre}}</p>
+                                    <span class="ml-featuredBox__category">{{top[0].categorie}}</span>
+                                </div><!--/.ml-featuredBox__item-->
+                                <div class="ml-featuredBox__item ml-text--center">
+                                    <span class="ml-featuredBox__nr">2</span>
+                                    <p class="ml-featuredBox__text">{{top[1].titre}}</p>
+                                    <span class="ml-featuredBox__category">{{top[0].categorie}}</span>
+                                </div><!--/.ml-featuredBox__item-->
+                                <div class="ml-featuredBox__item ml-text--center">
+                                    <span class="ml-featuredBox__nr">3</span>
+                                    <p class="ml-featuredBox__text">{{top[2].titre}}</p>
+                                    <span class="ml-featuredBox__category">{{top[2].categorie}}</span>
+                                </div><!--/.ml-featuredBox__item-->
+                            </div><!--/.ml-featuredBox-->
+
+                        </div><!--/.ml-sidebar-->
+                    </div><!--/.col-md-4 col-sm-4-->
+                </div><!--/.row-->
+
+            </div><!--/.ml-container-->
+        </div>
+
+    {% endblock %}

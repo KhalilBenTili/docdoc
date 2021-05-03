@@ -1,0 +1,158 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <form method="post" action="{{ path('triProduit') }}" align="center">
+        <div class="ml-shopbar" style="background-color: #00CFA1">
+            <div class="ml-shopbar__item">
+                <p class="ml-shopbar__title">SHOP THE SALE</p>
+            </div>
+            <div class="ml-shopbar__item">
+                <div class="ml-shopbar__filter">
+
+                    <label class="ml-shopbar__filterLabel" for="ml-shopbar__select1"></label>
+
+                    <label>
+                        <select name="tri">
+                            <option value="">veuillez Choisir</option>
+                            <option value="PC">Prix croissant</option>
+                            <option value="PD">Prix décroissant</option>
+                            <option value="RC">Ref croissant</option>
+                            <option value="RD">Ref décroissant</option>
+                            <option value="QC">Quantité croissante</option>
+                            <option value="QD">Quantité décroissante</option>
+                        </select>
+                    </label>
+                    <input type="submit" class="btn btn-bottom" value="Trier" style="background-color: #aeb9c5" />
+
+
+                </div><!--/.ml-shopbar__filter-->
+                <div class="ml-shopbar__filter">
+                    <form action="#" method="get">
+                        <label class="ml-shopbar__filterLabel" for="ml-shopbar__select2">SHOW:</label>
+                        <select id="ml-shopbar__select2" class="ml-shopbar__select ml-shopbar__select--w140" name="ml-shopbar__select">
+                            <option value="1">9</option>
+                            <option value="2">12</option>
+                            <option value="3">15</option>
+                        </select>
+                    </form>
+                </div><!--/.ml-shopbar__filter-->
+                <div class="ml-shopbar__filter">
+                    <ul class="ml-shopbar__display">
+                        <li data-display="2"><img src="img-assets/display.png" alt=""></li>
+                        <li data-display="3" class="active"><img src="img-assets/display2.png" alt=""></li>
+                        <li data-display="4"><img src="img-assets/display3.png" alt=""></li>
+                    </ul><!--/.ml-shopbar__display-->
+                </div><!--/.ml-shopbar__filter-->
+            </div><!--/.ml-shopbar__item-->
+        </div>
+        <div class="ml-shopSection">
+            <div class="container ml-container-full">
+                <div class="row">
+                    <div class="col-sm-3 col-md-3">
+                        <div class="ml-sidebar">
+                            <div class="ml-sidebar__container">
+                                <p class="ml-sidebar__title ml-sidebar__title--style2">FILTER BY PRICE</p>
+                                <!-- Range slider start -->
+                                <div class="ml-range-container">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div id="range-filter" class="range-filter--style2 noUi-target noUi-ltr noUi-horizontal noUi-background"><div class="noUi-base"><div class="noUi-origin noUi-connect" style="left: 0%;"><div class="noUi-handle noUi-handle-lower"></div></div><div class="noUi-origin noUi-background" style="left: 85.9813%;"><div class="noUi-handle noUi-handle-upper"></div></div></div></div>
+                                        </div>
+                                    </div><!--/.row-->
+                                    <div class="row slider-labels">
+												<span class="ml-range__values">Range:
+													<span id="range-filter-value1">$16</span> -
+													<span id="range-filter-value2">$200</span>
+												</span>
+                                        <form class="ml-range__form">
+                                            <input type="hidden" name="min-value" value="16">
+                                            <input type="hidden" name="max-value" value="200">
+                                            <button class="ml-btn ml-btn--inlineb ml-btn--style2 ml-btn--mdBlue ml-btn--rounded" type="submit">FILTER</button>
+                                        </form>
+                                    </div><!--/.slider-labels-->
+                                    <div class="ml-separator--style2"></div>
+                                </div><!--/.ml-range-container-->
+                                <!-- Range slider end -->
+                                <p class="ml-services__title ml-services__title--pt-40">Products CATEGORIES</p>
+                                <ul class="ml-services ml-services--style3 ml-services--pl-30 ml-services--hoverline">
+                                    {% for c in repo %}
+                                        <li class="ml-services__item active"><span>{{ c.titre }}</span></li>
+                                    {% endfor %}
+                                </ul>
+                                {% if app.user.type == 'delegue' %}
+                                    <ul class="ml-services ml-services--style3 ml-services--pl-30 ml-services--hoverline">
+                                        <a class="ml-product__price" href="{{ path('AjouterProduit',{'userid':app.user.id})}}"><span>AJOUTER UN PRODUIT</span></a></li>
+                                        <br>
+                                        <a class="ml-product__price" href="{{ path('afficheProduitD',{'userid':app.user.id})}}"><span>AFFICHER MES PRODUITS</span></a></li>
+                                    </ul><!--/.ml-services-->
+                                {% endif %}
+                                <div class="ml-separator--style2"></div>
+
+                            </div><!--/.ml-sidebar__container-->
+                        </div><!--/.ml-sidebar-->
+                    </div><!--/.col-sm-3 col-md-3-->
+                    <div class="col-sm-9 col-md-9 ml-servicesCategories ">
+
+                        <div class=" ml-container container" >
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="row">
+                                        {% for p in produits %}
+                                            <div class="col-md-4 col-sm-6" style="max-width:360px;"  >
+                                                <div class="ml-imageBox ml-imageBox--detailsHover ml-imageBox--hasShadow ml-imageBox--mb-40">
+                                                    <a class="ml-imageBox__anchor" href="{{ path('produit_show', {'id':p.id}) }}">
+                                                        <div class="ml-imageBox-wrapper">
+                                                            <div class="ml-imageBox-imgWrapper">
+                                                                {% for image in p.images|slice(0,1) %}
+                                                                    <img  src="{{ asset ('/uploads/images/' ~ image.nom ) }}"
+                                                                          class="ml-product__img" style=" height:300px "
+                                                                          alt="image" >
+                                                                {% endfor %}
+                                                            </div>
+                                                        </div><!--/.ml-imageBox-wrapper-->
+                                                        <div class="ml-imageBox-details ml-text--center">
+                                                            <h4 class="ml-imageBox-title">{{ p.nom }}</h4>
+                                                            <h6 class="ml-imageBox-title">{{ p.prix }} DT</h6>
+
+                                                            {% if app.user.type == 'medecin' or app.user.type == 'pharmacien' %}
+                                                                <div align="center">
+                                                                    <a href="{{ path('panier_add',{'id':p.id} )}}" class="btn ml-product__addToCart ml-product__addToCart--style2"><span class="ml-icon-shopping-cart2"></span><span class="hg__addToCartText">AJOUTER AU PANIER</span></a>
+                                                                    <br>
+                                                                </div>
+                                                                <br>
+                                                            {% endif %}
+                                                        </div>
+                                                    </a>
+
+
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div align="center" class=" card-footer block">
+                    <div class="pagination">
+                        {{ knp_pagination_render(produits) }}
+                    </div>
+                </div>
+                {#
+                <div class="ml-pagination__wrapper">
+                <ul class="ml-pagination ml-tabs__list">
+                    <li data-tab="page1" class="ml-pagination__item ml-pagination__item--current activeTab">1</li>
+                </ul><!--/.ml-pagination-->
+            </div><!--/.ml-pagination__wrapper-->
+                #}
+
+            </div><!--/.container-->
+        </div>
+    </form>
+
+{% endblock %}

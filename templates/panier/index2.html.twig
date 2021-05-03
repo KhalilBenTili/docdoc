@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PanierController!{% endblock %}
+
+{% block body %}
+
+    <style>
+        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    </style>
+    {% if items | length > 0 %}
+        <div class="bg-light p-1">
+            <br>
+            <h2> &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Votre panier :</h2>
+        </div>
+        <table align="center" valign="center" class="table table-responsive example-wrapper">
+            <thead>
+                <tr class="table-info">
+                    <th>Service</th>
+                    <th>Prix</th>
+                    <th>Description</th>
+                    <th>Quantité</th>
+                    <th>Total</th>
+                    <th>Supprimer</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ item.produit.libelle }}</td>
+                <td>{{ item.produit.prix }} DT</td>
+                <td>{{ item.produit.description }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.produit.prix * item.quantity }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="3" class="text-right"> Total :</td>
+                <td>{{ total }} DT</td>
+            </tr>
+
+            </tfoot>
+        </table>
+        <br>
+        <br>
+        <div align="center">
+            <a href="{{ path('Ajout_commande', {'Prix_Total':total,'userid':app.user.id } ) }}" style="background-color: #00CFA1" class=" ml-btnSlider hasAnchor">PROCEDER AU PAIEMENT</a>
+            <br>
+            <br>
+            <a href="{{ path('services') }}" class="ml-btnSlider--pr-10 hasAnchor">RETOUR</a>
+            <br>
+        </div>
+
+    {% else %}
+        <div class="example-wrapper" align="center">
+            <br>
+            <h1>Votre panier est vide !</h1>
+            <br>
+            <a href="{{ path('services') }}" class="ml-btnSlider hasAnchor">Services</a>
+
+        </div>
+    {% endif %}
+
+
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends 'baseBack.html.twig' %}
+{% block title %}Gestion Fournisseur {% endblock %}
+{% block contentHeader %} Modifier Fournisseur de Service {% endblock %}
+{% block contentMain %}
+    {{ form_start(f) }}
+    <section class="content">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Génerale</h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                <i class="fas fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            {{ form_label(f.fourniseur,'Fournisseur ',{'attr':{'for':"nometprenom"}}) }}
+                            {{ form_widget(f.fourniseur,{'attr':{'id':"nometprenom" ,'class':"form-control"}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(f.contact,'Email',{'attr':{'for':"contact"}}) }}
+                            {{ form_widget(f.contact,{'attr':{'id':"contact" ,'class':"form-control"}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(f.numero,'Numero téléphone',{'attr':{'for':"numero"}}) }}
+                            {{ form_widget(f.numero,{'attr':{'id':"numero" ,'class':"form-control"}}) }}
+                        </div>
+
+
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <div class="col-md-6">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title">Adresse</h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                <i class="fas fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            {{ form_label(f.gouvernorat,'gouvérnorate',{'attr':{'for':"gouvernorat"}}) }}
+                            {{ form_widget(f.gouvernorat,{'attr':{'id':"gouvernorat" ,'class':"form-control"}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(f.maplocation,'map Location',{'attr':{'for':"maplocation"}}) }}
+                            {{ form_widget(f.maplocation,{'attr':{'id':"maplocation" ,'class':"form-control"}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(f.service,'service',{'attr':{'for':"service"}}) }}
+                            {{ form_widget(f.service,{'attr':{'id':"service" ,'class':"form-control"}}) }}
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <input type="submit" value="Modifier " class="btn btn-success float-right">
+            </div>
+        </div>
+    </section>
+    {{ form_end(f) }}
+{% endblock %}

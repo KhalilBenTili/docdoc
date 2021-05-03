@@ -1,0 +1,17 @@
+{% for i in user%}
+    {% if i.type == "medecin" %}
+        <tr>
+            <td>{{ i.id }}</td>
+            <td>{{ i.nom }}</td>
+            <td>{{ i.prenom }}</td>
+            <td>{{ i.email }}</td>
+            <td>{{ i.roles|json_encode}}</td>
+            <td>{{ i.specialite }}</td>
+            <td>{{ i.disponabilite|date }}</td>
+            <td><a href="{{ path('modifierutilisateur', {'id': i.id}) }}">Attribuer </a></td>
+            <td><a href="{{ path('Detailm',{'id':i.id}) }}">Detail</a></td>
+            <td><a href="{{ path('Delete',{'id':i.id}) }}">Delete</a></td>
+
+        </tr>
+    {% endif %}
+{% endfor %}

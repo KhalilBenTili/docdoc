@@ -1,0 +1,70 @@
+{% extends 'baseBack.html.twig' %}
+{% block title %}Gestion Service{% endblock %}
+{% block contentHeader %} Details Service{% endblock %}
+{% block contentMain %}
+
+        <section class="content">
+
+            <!-- Default box -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Service Détails</h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                            <i class="fas fa-minus"></i></button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                            <i class="fas fa-times"></i></button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
+                            <div class="row">
+                                <div class="col-12 col-sm-4">
+                                    <div class="info-box bg-light">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center text-muted">fournisseurs</span>
+                                            <span class="info-box-number text-center text-muted mb-0">{{ service.fournisseurs|length }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-4">
+                                    <div class="info-box bg-light">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center text-muted">Nombre de commande</span>
+                                            <span class="info-box-number text-center text-muted mb-0">{{ 12 }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-12 row">
+                            <div class="col-md-6">
+                                <h3 class="text-grey"><i class="fas fa-paint-brush"></i>Catégorie :{{service.categorie.libelle }}</h3><br>
+                                <h4 class="text-green"><i class="fas fa-servicestack"></i>Nom de Service :{{service.libelle }}</h4><br>
+                                <p class="text-muted">DESCRIPTION: {{ service.description }}</p><br>
+                                <p class="text-bold">PRIX : {{ service.prix }} TND</p>
+                            </div>
+                            <div class="col-md-6">
+                                <h4 class="mt-5 ">Fournisseurs</h4>
+                                <ul {% for f in service.fournisseurs %} class="ml-programList--style1" >
+                                    <li>
+                                       <a href=""><span class="btn-link text-secondary"><i class="far fa-user"></i>{{ f.fourniseur }}</span></a>
+                                    </li>
+                                    <p class="text-danger" {% else %}>on'a pas des fournisseurs dans ce service</p>
+
+                                </ul {% endfor %}>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+
+        </section>
+    {% endblock %}

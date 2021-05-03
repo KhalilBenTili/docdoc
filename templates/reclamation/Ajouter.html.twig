@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+    <div class="ml-subheader ml-blogSubheader ml-subheader--h590">
+        <img src="images/subheader4.jpg" alt="" class="ml-subheader__img">
+        <div class="ml-bg-overlay ml-bg-overlay--style2"></div>
+        <div class="ml-subheader__content ml-subheader__content--center">
+            <div class="container ml-container ml-text--center">
+                <h1 class="ml-subheader__title">Reclamations</h1>
+
+            </div><!--/.ml-container-->
+        </div><!--/.ml-subheader__content-->
+    </div>
+    <div class="ml-contactSection" id="ml-contactSection">
+        <div class="ml-container container">
+            <div class="row">
+                <!--/.col-sm-4 col-md-4-->
+                <div class="col-sm-8 col-md-8">
+                    <div class="ml-appointment__box ml-appointment__box--style2">
+                        <div class="col-sm-12 col-md-12">
+                            <h3 class="ml-appointment__title ml-appointment__title--style2 ml-appointment__title--pb-30">Ajouter Reclamation</h3>
+                            <p class="ml-appointment__text">vous pouver ajouter votre reclamation nous allons vous repondre dans 24h via e-mail</p>
+                        </div><!--/.col-sm-12 col-md-12-->
+
+                        {{ form_start(form) }}
+                        {{ form_row(form.motif) }}
+                        {{ form_row(form.description) }}
+                        <button type="submit" class="btn btn-block btn-info">Envoyer réclamation</button>
+                        <button type="reset" class="btn btn-block btn-info">Annuler</button>
+                        {{ form_end(form) }}
+
+                    </div><!--/.ml-appointment__box-->
+                </div><!--/.col-sm-8 col-md-8-->
+            </div><!--/.row-->
+        </div><!--/.ml-container container-->
+    </div>
+{% endblock %}
+

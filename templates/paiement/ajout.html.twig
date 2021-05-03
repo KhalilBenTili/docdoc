@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<div class="ml-contactSection">
+    <div class="ml-container container">
+        <div class="row">
+            <div class="col-sm-8 col-md-8">
+                <div class="ml-appointment__box ml-appointment__box--style2">
+                    <div class="col-sm-12 col-md-12">
+                        <h2 class="ml-appointment__title ml-appointment__title--style2 ml-appointment__title--pb-30">Veuillez entrer vos informations:</h2>
+                        <p class="ml-appointment__text"></p>
+                        {{ form(f) }}
+                        <br>
+                    </div>
+                    <a href="{{ path('afficherPaiement', {'userid':app.user.id}) }}" class="btn btn-danger">AFFICHER TOUT LES PAIEMENTS</a><!--/.col-sm-12 col-md-12-->
+
+                </div><!--/.ml-appointment__box-->
+            </div><!--/.col-sm-8 col-md-8-->
+        </div><!--/.row-->
+    </div><!--/.ml-container container-->
+</div><!--/.ml-contactSection-->
+{% endblock body %}

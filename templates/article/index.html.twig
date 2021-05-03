@@ -1,0 +1,181 @@
+{%  extends 'base.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"/>
+{% endblock %}
+    {% block body %}
+
+
+<!-- Subheader start -->
+<div class="ml-subheader ml-blogSubheader ml-subheader--h590">
+    <img src="distClient/images/subheader4.jpg" alt="" class="ml-subheader__img">
+    <div class="ml-bg-overlay ml-bg-overlay--style2"></div>
+    <div class="ml-subheader__content ml-subheader__content--center">
+        <div class="container ml-container ml-text--center">
+            <h1 class="ml-subheader__title">MEDLIFE BLOG</h1>
+            <p class="ml-subheader__subtitle">Let’s see if you can read</p>
+        </div><!--/.ml-container-->
+    </div>
+</div><!--/.ml-subheader-->
+<!-- Subheader end -->
+
+
+<!--  Blog section start -->
+<div class="ml-blogSection">
+    <div class="ml-container container">
+        <div class="row">
+            <div class="col-md-8 col-sm-8">
+
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="ml-singleBlog">
+                            <h1 class="ml-singleBlog__title"> {{ article.titre }}</h1>
+                            <p class="ml-singleBlog__details ml-text--center">{{ article.createdat|date('Y-m-d H:i:s') }} </p>
+
+
+                            <tr>
+                                <td><img src="{{ vich_uploader_asset(article, 'imageFile') }}" /></td>
+                            </tr>
+                            <p class="ml-singleBlog__desc">
+
+                                {{ article.contenu |raw }}
+
+
+
+                            <div class="ml-separator--style2"></div>
+                            <div class="container">
+
+                                <a href="{{ path('jaime',{'id':article.id , 'user_id':app.user.id} )}}">
+                                    <i class="fa fa-thumbs-up"></i> &nbsp;{{ article.nblike }}   &nbsp; j'aime</a>
+{#                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;{% if app.user.id and app.user.id%}#}
+{#                                <i class="fas fa-thumbs-up"></i>#}
+{#                                &nbsp;{% else%}#}
+{#                                <i class="far fa-thumbs-up"></i>#}
+
+{#                                &nbsp;{% endif%}#}
+
+                                <a href="{{ path('jaimepas',{'id':article.id, 'user_id':app.user.id} )}}"> <i class="fa fa-thumbs-down"></i> &nbsp; {{ article.nbdislike }}  &nbsp; j'aime pas</a>
+
+                            </div>
+                            <br>
+
+                            <div class="ml-separator--style2"></div>
+                            <div class="ml-blogComments">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="grix xs2 sm3 gutter-0 card">
+                                            <div class="col-xs2 col-sm3">
+                                                <h3>Liste des commentaires</h3>
+
+                                                {% for comment in article.commentaires %}
+
+                                                    {% if comment.parent == null %}
+
+                                                        <p>                                            <br>
+                                                            Publié par {{comment.user.prenom }} le {{comment.createdAt|date("d/m/Y H:i") }}                                            <br>
+                                                        </p>
+                                                        <div>{{comment.contenu |raw}}</div>
+{#                                                        <p><a href="#ajout-commentaire" data-reply data-id="{{comment.id}}" class="btn primary press">Répondre</a></p>#}
+
+{#                                                        #}{# On affiche les réponses #}
+{#                                                        {% for reply in comment.replies %}#}
+{#                                                            <p>Réponse publiée le {{reply.createdAt|date("d/m/Y H:i") }}</p>#}
+{#                                                            <div>{{reply.contenu |raw}}</div>#}
+{#                                                        {% endfor %}#}
+
+                                                    {% endif %}
+                                       {% endfor %}
+                                            </div>
+                                            <br>
+
+                                            <div class="col-xs2 col-sm3" id="ajout-commentaire">
+                                                <h4>Ajouter un commentaire <br>
+                                                </h4>
+                                                {{ form(commentForm) }}
+                                            </div>
+
+                                        {#<div class="ml-comments__message ml-comments__message--pt-40">
+                                            <div class="ml-comments__avatarWrapp">
+                                                <img src="distClient/images/avatar4.jpg" class="ml-comments__avatar" alt="">
+                                            </div>
+                                            <div class="ml-comments__formWrapp">
+                                                <form action="#" method="post" class="ml-comments__form">
+                                                    <div class="row">
+                                                        <div class="form-group col-sm-12">
+                                                            <textarea class="ml-comments__textarea" name="reply" cols="30" rows="10" placeholder="Leave a comment..."></textarea>
+                                                        </div><!--/.form-group-->
+                                                    </div><!--/.row-->
+                                                    <input name="submit" type="submit" id="submit" class="ml-btn ml-comments__submit" value="Post Comment">
+                                                </form><!--/.ml-comment-form-->
+                                            </div><!--/.ml-comment-formWrapp-->
+                                        </div><!--/.ml-comments__message-->#}
+                                    </div><!--/.col-md-12-->
+                                </div><!--/.row-->
+                            </div><!--/.ml-blogComments-->
+
+                        </div><!--/.ml-singleBlog-->
+
+                    </div><!--/.col-md-12 col-sm-12-->
+                </div><!--/.row-->
+                </div>
+            </div><!--/.col-md-8 col-sm-8-->
+            <div class="col-md-4 col-sm-4">
+                <div class="ml-sidebar ml-sidebar--right ml-sidebar--mt-20">
+                    <div class="ml-categoriesList-wrapper ml-text--center">
+
+                        <h4 class="ml-categoriesList__title">CATEGORIES</h4>
+                        {%for categorie in categories%}
+
+                        <ul class="ml-categoriesList">
+                            <li class="ml-categoriesList__item"><a href="#"><span>{{categorie.nom}}</span></a></li>
+
+                            {% endfor %}
+                        </ul>
+
+
+                            </li>
+                        </ul><!--/.ml-services-->
+                    </div><!--/.ml-servicesWrapper-->
+
+                    <div class="ml-banner__wrapper">
+                        <div class="ml-banner">
+                            <img src="../../../../../Downloads/Medlife%20template%20files/dist/images/medlifeadd.jpg" alt="">
+                        </div><!--/.ml-banner-->
+                    </div><!--/.ml-banner__wrapper-->
+
+                    <div class="ml-sidebar__iconbox">
+                        <p class="ml-sidebar__title ml-text--center ml-sidebar__title--pb-20">SUIVEZ-NOUS</p>
+                        <div class="ml-socialIcons ml-socialIcons--centerFlex ml-socialIcons--style2">
+                            <span class="ml-socialIcons__item ml-icon-facebook"></span>
+                            <span class="ml-socialIcons__item ml-icon-twitter"></span>
+                            <span class="ml-socialIcons__item ml-icon-instagram2"></span>
+                        </div><!--/.ml-socialIcons-->
+                    </div><!--/.ml-sidebar__iconbox-->
+
+
+
+                </div><!--/.ml-featuredBox__item-->
+            </div><!--/.ml-featuredBox-->
+
+        </div><!--/.ml-sidebar-->
+    </div><!--/.col-md-4 col-sm-4-->
+</div><!--/.row-->
+</div><!--/.ml-container-->
+</div><!--/.ml-blogSection-->
+<!--  Blog section end -->
+{#{% block javascripts %}#}
+{#        <script>#}
+{#            window.onload = () => {#}
+{#                document.querySelector("#article_titre").value = "{{ article.titre |raw }}";#}
+{#                // On met un écouteur d'évènements sur tous les boutons répondre#}
+{#                document.querySelectorAll("[data-reply]").forEach(element => {#}
+{#                    element.addEventListener("click", function(){#}
+{#                        document.querySelector("#comments_parentId").value = this.dataset.id;#}
+{#                    });#}
+{#                });#}
+{#            }#}
+{#            let caroulix = new Caroulix('#carousel');#}
+{#            let modal = new Modal('#modale-contact');#}
+{#        </script>#}
+{#{% endblock %}#}
+
+    {% endblock body %}
