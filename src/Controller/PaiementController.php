@@ -149,7 +149,7 @@ Merci pour votre confiance.');
         $paiement->setType($request->get('type'));
         $paiement->setUserid($request->get('userid'));
 
-        $message = (new \Swift_Message('NOUVEAU PRODUIT'))
+        $message = (new \Swift_Message('NOUVEAU PAIEMENT'))
             ->setFrom('docdocpidev@gmail.com')
             ->setTo($request->get('email'))
             ->setBody(
