@@ -7,6 +7,7 @@ use App\Entity\Image;
 use App\Entity\Produit;
 use App\Entity\User;
 use App\Form\ProduitType;
+use App\Repository\CategorieRepository;
 use App\Repository\ImageRepository;
 use App\Repository\ProduitRepository;
 use App\Repository\UserRepository;
@@ -371,5 +372,126 @@ class ProduitController extends AbstractController
         ]);
     }
     //Afficher prod back end
+
+
+    /**
+     * @Route("/ajouterPMobile/{email}",name="ajouterPMobile")
+     * @param Request $request
+     * @param NormalizerInterface $normalizer
+     * @param CategorieRepository $repo
+     * @return Response
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     */
+    function ajouterPMobile(Request $request,\Swift_Mailer $mailer,NormalizerInterface $normalizer, CategorieRepository $repo, $email){
+
+        $em = $this->getDoctrine()->getManager();
+        $produit = new Produit();
+        $cat= $repo->find($request->get('categorie_id'));
+        $produit->setCategorie($cat);
+        $produit->setReference($request->get('reference'));
+        $produit->setNom($request->get('nom'));
+        $produit->setQuantite($request->get('quantite'));
+        $produit->setDescription(($request->get('description')));
+        $produit->setPrix($request->get('prix'));
+        $produit->setUserid($request->get('userid'));
+
+        $message = (new \Swift_Message('NOUVEAU PRODUIT'))
+            ->setFrom('docdocpidev@gmail.com')
+            ->setTo($request->get('email'))
+            ->setBody(
+                $this->renderView(
+                // templates/emails/registration.html.twig
+                    'emails/nouvprod.html.twig',['produit'=>$produit]), 'text/html')
+
+            // you can remove the following code if you don't define a text version for your emails
+            ->addPart(
+                $this->renderView(
+                // templates/emails/registration.txt.twig
+                    'emails/nouvprod.txt.twig'
+                ),
+                'text/plain'
+            )
+        ;
+
+        $mailer->send($message);
+
+
+        $em->persist($produit);
+        $em->flush();
+        $jsonContent = $normalizer->normalize($produit, 'json', ['groups'=>'produits']);
+        return new Response(json_encode($jsonContent));
+
+
+    }
+
+    /**
+     * @Route("/rechercheMobile/{nom}",name="rechercheMobile")
+     * @param $nom
+     * @param NormalizerInterface $normalizer
+     * @return Response
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     */
+    public function RechercheMobile($nom, NormalizerInterface $normalizer)
+    {
+        $repo = $this->getDoctrine()->getRepository(Produit::class);
+        $produits=$repo->findBy(array('nom' => $nom));
+        $json= $normalizer->normalize($produits, 'json',['groups'=>'produits']);
+        return new Response(json_encode($json));
+    }
+
+    /**
+     * @param NormalizerInterface $normalizer
+     * @return Response
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     * @Route ("/afficherPMobile/{p}",name="afficherPMobile")
+     */
+    public function affichePMobile(NormalizerInterface $normalizer){
+        $repo = $this->getDoctrine()->getRepository(Produit::class);
+        $produits=$repo->findAll();
+        $jsonContent = $normalizer->normalize($produits,'json',['groups'=>'produits']);
+        return new Response(json_encode($jsonContent));
+
+    }
+
+    /**
+     * @Route("/supprimerPMobile/{id}",name="supprimerPMobile")
+     * @param NormalizerInterface $normalizer
+     * @return Response
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     */
+    function supprimerPMobile(NormalizerInterface $normalizer,$id){
+
+        $em = $this->getDoctrine()->getManager();
+        $produit = $em->getRepository(Produit::class)->find($id);
+        $em->remove($produit);
+        $em->flush();
+        $jsonContent = $normalizer->normalize($produit, 'json', ['groups'=>'produits']);
+        return new Response(json_encode($jsonContent));
+
+    }
+
+
+    /**
+     * @Route("/modifierPMobile/{id}",name="modifierPMobile")
+     * @param NormalizerInterface $normalizer
+     * @return Response
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     */
+    function modifierPMobile(Request $request,NormalizerInterface $normalizer,$id){
+
+        $em = $this->getDoctrine()->getManager();
+        $produit = $em->getRepository(Produit::class)->find($id);
+
+        $produit->setReference($request->get('reference'));
+        $produit->setNom($request->get('nom'));
+        $produit->setQuantite($request->get('quantite'));
+        $produit->setDescription($request->get('description'));
+        $produit->setPrix($request->get('prix'));
+
+        $em->flush();
+        $jsonContent = $normalizer->normalize($produit, 'json', ['groups'=>'produits']);
+        return new Response(json_encode($jsonContent));
+
+    }
 
 }
