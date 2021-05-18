@@ -19,6 +19,7 @@ class Categorie
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      * @Groups ("categories")
+     * @Groups("post:read")
      */
     private $id;
 
@@ -26,6 +27,7 @@ class Categorie
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Veuillez saisir le titre svp !")
      * @Groups ("categories")
+     * @Groups("post:read")
      */
     private $titre;
 
@@ -33,6 +35,7 @@ class Categorie
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Veuillez saisir une description svp !")
      * @Groups ("categories")
+     * @Groups("post:read")
      */
     private $description;
 
