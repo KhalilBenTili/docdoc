@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\PaiementRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=PaiementRepository::class)
@@ -14,51 +15,61 @@ class Paiement
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("paiement")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("paiement")
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("paiement")
      */
     private $prenom;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("paiement")
      */
     private $adresse;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("paiement")
      */
     private $email;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups("paiement")
      */
     private $numero;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("paiement")
      */
     private $type;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("paiement")
      */
     private $status;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups("paiement")
      */
     private $prix;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups("paiement")
      */
     private $userid;
 
