@@ -7,6 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ProduitRepository::class)
@@ -17,6 +18,7 @@ class Produit
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("produits")
      */
     private $id;
 
@@ -29,12 +31,14 @@ class Produit
      *      minMessage = "La reference doit etre de longueur {{ limit }} chiffres au minimum",
      *      maxMessage = "La longueur de la reference ne doit pas depasser {{ limit }} chiffres"
      * )
+     * @Groups("produits")
      */
     private $reference;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Veuillez saisir le Nom svp !")
+     * @Groups("produits")
      */
     private $nom;
 
@@ -42,12 +46,14 @@ class Produit
      * @ORM\Column(type="integer")
      * @Assert\NotBlank(message="Veuillez saisir la quantité svp !")
      * @Assert\Positive(message="Veuillez saisir une quantité positive svp !")
+     * @Groups("produits")
      */
     private $quantite;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Veuillez saisir une Description svp !")
+     * @Groups("produits")
      */
     private $description;
 
@@ -55,22 +61,26 @@ class Produit
      * @ORM\Column(type="float")
      * @Assert\NotBlank(message="Veuillez saisir le Prix svp !")
      * @Assert\Positive(message="Veuillez saisir un Prix positif svp !")
+     * @Groups("produits")
      */
     private $prix;
 
     /**
      * @ORM\ManyToOne(targetEntity=Categorie::class, inversedBy="produits")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("produits")
      */
     private $categorie;
 
     /**
      * @ORM\OneToMany(targetEntity=Image::class, mappedBy="produit", cascade={"persist"})
+     * @Groups("produits")
      */
     private $images;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups("produits")
      */
     private $userid;
 
