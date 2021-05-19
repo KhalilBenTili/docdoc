@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ServiceController extends AbstractController
 {
@@ -206,5 +207,18 @@ class ServiceController extends AbstractController
 
         ]);
     }
+    /**
+     * @param NormalizerInterface $normalizer
+     * @param ServiceRepository $repo
+     * @return Response
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     * @Route ("/afficheServiceMobile",name="affichemobile")
+     */
+   public function afficheMobile(NormalizerInterface $normalizer, ServiceRepository $repo){
+    $services=$repo->findAll();
+   $jsonContent = $normalizer->normalize($services,'json',['groups'=>'post:read']);
+   return new Response(json_encode($jsonContent));
+    
+}
 }
 

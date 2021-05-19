@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-
+use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=ServiceRepository::class)
  */
@@ -17,6 +17,7 @@ class Service
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * * @Groups("post:read")
      */
     private $id;
 
@@ -29,12 +30,14 @@ class Service
      *      maxMessage = "libelle ne peut pas comporter plus de {{limit}} caractères",
      *      allowEmptyString = false
      * )
+     * @Groups("post:read")
      */
     private $libelle;
 
     /**
      * @ORM\ManyToOne(targetEntity=CategorieService::class, inversedBy="services")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("post:read")
      */
     private $categorie;
 
@@ -45,6 +48,7 @@ class Service
      * @Assert\PositiveOrZero(
      *     message="prix doit étre superieur ou égale 0"
      * )
+    * @Groups("post:read")
      *
      */
 
@@ -60,31 +64,37 @@ class Service
      *      maxMessage = "déscription ne peut pas comporter plus de {{limit}} caractères",
      *      allowEmptyString = false
      * )
+     * @Groups("post:read")
      */
     private $description;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups("post:read")
      */
     private $disponibilite;
 
     /**
      * @ORM\Column(type="array", nullable=true)
+     * 
      */
     private $stars = [];
 
     /**
      * @ORM\OneToMany(targetEntity=FourniseurService::class, mappedBy="service")
+     * @Groups("post:read")
      */
     private $fournisseurs;
 
     /**
      * @ORM\OneToMany(targetEntity=Rate::class, mappedBy="service")
+     * @Groups("post:read")
      */
     private $rates;
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     * @Groups("post:read")
      */
     private $avgrating;
 

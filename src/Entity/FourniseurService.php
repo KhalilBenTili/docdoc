@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\FourniseurServiceRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=FourniseurServiceRepository::class)
@@ -27,6 +28,7 @@ class FourniseurService
      *      maxMessage = "the fournisseur cannot be longer than {{ limit }} characters",
      *      allowEmptyString = false
      * )
+     * @Groups("post:read")
      */
     private $fourniseur;
 
@@ -52,6 +54,7 @@ class FourniseurService
      *      maxMessage = "phone number cannot be longer than {{ limit }} numbers",
      *      allowEmptyString = false
      * )
+     * @Groups("post:read")
      */
     private $numero;
 
