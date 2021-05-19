@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Consultation;
+use App\Entity\Question;
+use App\Entity\User;
 use App\Form\ConsultationType;
 use App\Repository\ConsultationRepository;
 use App\Repository\UserRepository;
@@ -13,6 +15,10 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 class ConsultationController extends AbstractController
 {
@@ -149,8 +155,118 @@ class ConsultationController extends AbstractController
             $em->flush();
 
         return $this->redirect('/Liste-des-consultations-medecin/'.$id);
-
     }
+    /**
+     * @Route("/afficher-consultation-medecin",name="consultationMed")
+     * @Method("GET")
+     */
+    public function afficherConsultationMed(Request $request,NormalizerInterface $normalizer)
+    {
+        // /afficher-consultation-medecin?idUser=6
+        $id=$request->get("idUser");
+        $em=$this->getDoctrine()->getManager();
+        $user=$em->getRepository(User::class)->find($id);
+        $encoder= new JsonEncoder();
+        $json=$normalizer->normalize($user->getConsultationsM(),'json',['groups'=>['consultation']]);
+        return new Response(json_encode($json));
+    }
+    /**
+     * @Route("/afficher-consultation-patient",name="consultationPatient")
+     * @Method("GET")
+     */
+    public function afficherConsultationPatientJ(Request $request,NormalizerInterface $normalizer)
+    {
+        // /afficher-consultation-patient?idUser=6
+        $id=$request->get("idUser");
+        $em=$this->getDoctrine()->getManager();
+        $user=$em->getRepository(User::class)->find($id);
+        $encoder= new JsonEncoder();
+        $json=$normalizer->normalize($user->getConsultations(),'json',['groups'=>['consultation']]);
+        return new Response(json_encode($json));
+    }
+    /**
+     * @Route("/supp-consultation-json",name="suppConsultation")
+     * @Method("DELETE")
+     */
+    public function supprimerConsultationJ(Request $request,     NormalizerInterface $serializer)
+    {
+        // /supp-consultation-json?id=123
+        $id= $request->get("id");
+        $em=$this->getDoctrine()->getManager();
+        $consultation=$em->getRepository(Consultation::class)->find($id);
+        if($consultation!=null)
+        {
+            $em->remove($consultation);
+            $em->flush();
+            $json=$serializer->normalize("consultation supprimee!");
+            return new Response(json_encode($json));
+        }
+    }
+    /**
+     * @Route("/edit-consultation-json",name="EditConsultationJson")
+     * @Method("PUT")
+     */
+
+    public function modifierConsultationJ(Request $request,NormalizerInterface $serializer)
+    {
+        // /edit-consultation-json?id=10&date=2019-02-04&hr=00:00:00
+        $em=$this->getDoctrine()->getManager();
+        $consultation=$this->getDoctrine()->getManager()->getRepository(Consultation::class)->find($request->get("id"));
+        $date=$request->query->get("date");
+        $heure=$request->query->get("hr");
+        $datehrS=$date." ".$heure;
+        $date = new \DateTime($datehrS);
+        $consultation->setDatehr($date);
+        $em->persist($consultation);
+        $em->flush();
+        $json=$serializer->normalize($consultation,'json',['groups'=>['consultation']]);
+        return new Response(json_encode($json));
+    }
+    /**
+     * @Route("/add-consultation-json",name="AddConsJson")
+     * @Method("POST")
+     */
+
+    public function AjouterConsultationJ(Request $request,NormalizerInterface $serializer, UserRepository $repo1 )
+    {
+        // /add-consultation-json?date=2019-02-04&hr=00:00:00&medid=6&pid=1
+        $consultation=new Consultation();
+        $em=$this->getDoctrine()->getManager();
+        $patientId=$request->query->get("medid");
+        $medecinId=$request->query->get("pid");
+        $consultation->setUser($repo1->find($patientId));
+        $consultation->setUserM($repo1->find($medecinId));
+        $consultation->setIsAccepted(0);
+        $date=$request->query->get("date");
+        $heure=$request->query->get("hr");
+        $datehrS=$date." ".$heure;
+        $date = new \DateTime($datehrS);
+        $consultation->setDatehr($date);
+        $em->persist($consultation);
+        $em->flush();
+        $json=$serializer->normalize($consultation,'json',['groups'=>['consultation']]);
+        return new Response(json_encode($json));
+    }
+    /**
+     * @Route("/accepter-consultation-json",name="EditConsJson")
+     * @Method("PUT")
+     */
+
+    public function AccepterConsultationJ(Request $request,NormalizerInterface $serializer)
+    {
+        // /accepter-consultation-json?id=10
+        $em=$this->getDoctrine()->getManager();
+        $consultation=$this->getDoctrine()->getManager()->getRepository(Consultation::class)->find($request->get("id"));
+        $consultation->setIsAccepted(1);
+        $em->persist($consultation);
+        $em->flush();
+        $json=$serializer->normalize($consultation,'json',['groups'=>['consultation']]);
+        return new Response(json_encode($json));
+    }
+
+
+
+
 
 }
 

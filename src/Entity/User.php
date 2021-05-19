@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -22,14 +23,18 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"question","reponse","consultation"})
      */
     private $id;
+
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\Email(message = "L'e-mail '{{ value }}'
     N'est pas valide.")
+     *     @Groups({"question","reponse","consultation"})
      */
+
     private $email;
 
     /**
@@ -46,13 +51,17 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=30)
      *@Assert\NotBlank(message="ce champ est requis")
+     * @Groups({"question","reponse","consultation"})
      */
+
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=30)
      *@Assert\NotBlank(message="ce champ est requis")
+     * @Groups({"question","reponse","consultation"})
      */
+
     private $prenom;
 
     /**
@@ -62,7 +71,9 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"question","reponse","consultation"})
      */
+
     private $type;
 
 
@@ -71,13 +82,16 @@ class User implements UserInterface
      *@Assert\NotBlank(message="ce champ est requis")
      *@Assert\Length(min = "8",max = "8",minMessage="Votre Numéro doit contenir 8 chiffres ."))
      * @Assert\Regex(pattern="/^[0-9]*$/", message="Doit contenir des chiffres")
+     * @Groups({"question","reponse","consultation"})
      */
+
     private $numtel;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      *@Assert\Length(min = "8",max = "8",minMessage="Votre CIN doit contenir 8 chiffres."))
      * @Assert\Regex(pattern="/^[0-9]*$/", message="Doit contenir des chiffres")
+     * @Groups({"question","reponse","consultation"})
      */
     private $cin;
 

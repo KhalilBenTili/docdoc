@@ -11,15 +11,21 @@ use App\Form\ArticleType;
 use App\Form\CommentairesType;
 use App\Repository\CommentairesRepository;
 use DateTime;
+use DateTimeZone;
+use Error;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\ArticleRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
 use MercurySeries\FlashyBundle\FlashyNotifier;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 
 class ArticleController extends AbstractController
@@ -56,7 +62,7 @@ class ArticleController extends AbstractController
     /**
      * @Route("/catarticle/{id}/{user_id}", name="catarticle")
      */
-    public function montrer($id, Request $request , FlashyNotifier $flashy , $user_id)
+    public function montrer($id, Request $request, FlashyNotifier $flashy, $user_id)
     {
         $article = $this->getDoctrine()->getRepository(Article::class)->find($id);
         $categorie = $this->getDoctrine()->getRepository(CategorieArticle::class)->findAll();
@@ -71,7 +77,7 @@ class ArticleController extends AbstractController
 
         $commentForm->handleRequest($request);
 
-        if($commentForm->isSubmitted() && $commentForm->isValid()){
+        if ($commentForm->isSubmitted() && $commentForm->isValid()) {
             $comment->setCreatedAt(new DateTime());
             $comment->setArticle($article);
             $comment->setUser($user);
@@ -80,7 +86,7 @@ class ArticleController extends AbstractController
 
             $em = $this->getDoctrine()->getManager();
 
-            if($parentid != null){
+            if ($parentid != null) {
                 $parent = $em->getRepository(Commentaires::class)->find($parentid);
             }
 
@@ -89,24 +95,24 @@ class ArticleController extends AbstractController
             $em->persist($comment);
             $em->flush();
             $flashy->success('votre commentaire a été ajouté');
-            return $this->redirectToRoute('catarticle', ['id' => $article->getId() , 'user_id'=>$user->getId()]);
-	        }
-
+            return $this->redirectToRoute('catarticle', ['id' => $article->getId(), 'user_id' => $user->getId()]);
+        }
 
 
         return $this->render('article/index.html.twig', [
-                'article' => $article,
-            'categories' => $categorie ,
-                    'user'=>$user,
+            'article' => $article,
+            'categories' => $categorie,
+            'user' => $user,
             'commentForm' => $commentForm->createView()]);
 
 
     }
+
     /**
      * @Route("admin/article/deletecomment/{comment_id}",name="deletecoarticle")
      */
 
-    public function deleteComment($comment_id, CommentairesRepository $repo , FlashyNotifier $flashy )
+    public function deleteComment($comment_id, CommentairesRepository $repo, FlashyNotifier $flashy)
     {
         $em = $this->getDoctrine()->getManager();
         $comment = $repo->find($comment_id);
@@ -135,12 +141,39 @@ class ArticleController extends AbstractController
         return $this->render('blog/blog.html.twig', ['articles' => $article, 'categories' => $categorie, 'top' => $top]);
     }
 
+    /**
+     * @Route("/blog/afficheMobile/",name="afficherBlogMobile")
+     * @param NormalizerInterface $normalizer
+     * @return Response
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     */
+    public function afficheBlogMobile(NormalizerInterface $normalizer)
+    {
+        $repo = $this->getDoctrine()->getRepository(Article::class);
+        $articles = $repo->findAll();
+        $json = $normalizer->normalize($articles, 'json', ['groups' => 'article']);
+        return new Response(json_encode($json));
+    }
+
+    /**
+     * @Route("/catArticle/afficheMobile/{id}",name="afficherCatArticleMobile")
+     * @param NormalizerInterface $normalizer
+     * @return Response
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     */
+    public function afficheCatArticleMobile($id, NormalizerInterface $normalizer)
+    {
+        $repo = $this->getDoctrine()->getRepository(CategorieArticle::class);
+        $categorie = $repo->find($id);
+        $json = $normalizer->normalize($categorie, 'json', ['groups' => 'catarticle']);
+        return new Response(json_encode($json));
+    }
 
     /**
      * @Route("admin/article/delete/{id}",name="deletecatarticle")
      */
 
-    public function delete($id, ArticleRepository $repo , FlashyNotifier $flashy)
+    public function delete($id, ArticleRepository $repo, FlashyNotifier $flashy)
     {
         $em = $this->getDoctrine()->getManager();
         $article = $repo->find($id);
@@ -176,7 +209,7 @@ class ArticleController extends AbstractController
      * @param ArticleRepository $repo
      * @param Request $request
      * @param $article
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @return RedirectResponse|Response
      */
 
     function update($id, ArticleRepository $repo, Request $request, FlashyNotifier $flashy)
@@ -202,9 +235,9 @@ class ArticleController extends AbstractController
      * @param $id
      * @param ArticleRepository $repo
      * @param $article
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @return RedirectResponse|Response
      */
-    public function like($id, ArticleRepository $repo , $user_id , Request $request , FlashyNotifier $flashy)
+    public function like($id, ArticleRepository $repo, $user_id, Request $request, FlashyNotifier $flashy)
     {
         $em = $this->getDoctrine()->getManager();
         $article = $repo->find($id);
@@ -219,7 +252,7 @@ class ArticleController extends AbstractController
 
         $commentForm->handleRequest($request);
 
-        if($commentForm->isSubmitted() && $commentForm->isValid()){
+        if ($commentForm->isSubmitted() && $commentForm->isValid()) {
             $comment->setCreatedAt(new DateTime());
             $comment->setArticle($article);
             $comment->setUser($user);
@@ -228,7 +261,7 @@ class ArticleController extends AbstractController
 
             $em = $this->getDoctrine()->getManager();
 
-            if($parentid != null){
+            if ($parentid != null) {
                 $parent = $em->getRepository(Commentaires::class)->find($parentid);
             }
 
@@ -237,9 +270,9 @@ class ArticleController extends AbstractController
             $em->persist($comment);
             $em->flush();
             $flashy->success('votre commentaire a été ajouté');
-            return $this->redirectToRoute('catarticle', ['id' => $article->getId() , 'user_id'=>$user->getId()]);
+            return $this->redirectToRoute('catarticle', ['id' => $article->getId(), 'user_id' => $user->getId()]);
         }
-        return $this->render("article/index.html.twig", ['article' => $article, 'categories' => $categorie, 'user'=>$user , 'commentForm' => $commentForm->createView()]);
+        return $this->render("article/index.html.twig", ['article' => $article, 'categories' => $categorie, 'user' => $user, 'commentForm' => $commentForm->createView()]);
     }
 
     /**
@@ -247,9 +280,9 @@ class ArticleController extends AbstractController
      * @param $id
      * @param ArticleRepository $repo
      * @param $article
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @return RedirectResponse|Response
      */
-    public function dislike($id, ArticleRepository $repo , Request $request , FlashyNotifier $flashy, $user_id  )
+    public function dislike($id, ArticleRepository $repo, Request $request, FlashyNotifier $flashy, $user_id)
     {
         $em = $this->getDoctrine()->getManager();
         $article = $repo->find($id);
@@ -264,7 +297,7 @@ class ArticleController extends AbstractController
 
         $commentForm->handleRequest($request);
 
-        if($commentForm->isSubmitted() && $commentForm->isValid()){
+        if ($commentForm->isSubmitted() && $commentForm->isValid()) {
             $comment->setCreatedAt(new DateTime());
             $comment->setArticle($article);
             $comment->setUser($user);
@@ -273,7 +306,7 @@ class ArticleController extends AbstractController
 
             $em = $this->getDoctrine()->getManager();
 
-            if($parentid != null){
+            if ($parentid != null) {
                 $parent = $em->getRepository(Commentaires::class)->find($parentid);
             }
 
@@ -282,9 +315,57 @@ class ArticleController extends AbstractController
             $em->persist($comment);
             $em->flush();
             $flashy->success('votre commentaire a été ajouté');
-            return $this->redirectToRoute('catarticle', ['id' => $article->getId() , 'user_id'=>$user->getId()]);
+            return $this->redirectToRoute('catarticle', ['id' => $article->getId(), 'user_id' => $user->getId()]);
         }
-        return $this->render("article/index.html.twig", ['article' => $article, 'categories' => $categorie, 'user'=>$user , 'commentForm' => $commentForm->createView()]);
+        return $this->render("article/index.html.twig", ['article' => $article, 'categories' => $categorie, 'user' => $user, 'commentForm' => $commentForm->createView()]);
+    }
+
+    /**
+     * @Route ("/commentaire/afficheMobile")
+     */
+    public function afficherCommentaireMobile(Request $request)
+    {
+        $articleId = $request->get("articleId");
+        $commentaires = $this->getDoctrine()->getRepository(Commentaires::class)->findAll();
+
+        $jsonContent = null;
+        $i = 0;
+        foreach ($commentaires as $commentaire) {
+            $jsonContent[$i]['id'] = $commentaire->getId();
+            $jsonContent[$i]['contenu'] = $commentaire->getContenu();
+            $jsonContent[$i]['articleId'] = $commentaire->getArticle()->getId();
+
+            $i++;
+        }
+
+        if ($commentaires) {
+            return new Response(json_encode($jsonContent));
+        } else {
+            return new Response(null);
+        }
+
+    }
+
+    /**
+     * @Route ("/commentaire/ajouterMobile")
+     * @throws Exception
+     */
+    public function ajouterCommentaire(Request $request)
+    {
+        $contenu = $request->get("contenu");
+        $articleId = (int)$request->get("articleId");
+
+        $commentaire = new Commentaires();
+        $commentaire->setUser($this->getDoctrine()->getRepository(User::class)->find(1));
+        $commentaire->setArticle($this->getDoctrine()->getRepository(Article::class)->find($articleId));
+        $commentaire->setCreatedAt(new DateTime('now', new DateTimeZone('Africa/Tunis')));
+        $commentaire->setContenu($contenu);
+
+        $manager = $this->getDoctrine()->getManager();
+        $manager->persist($commentaire);
+        $manager->flush();
+
+        return new JsonResponse("commentaire ajouté");
     }
 
     /**

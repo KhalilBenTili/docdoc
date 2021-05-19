@@ -4,12 +4,15 @@ namespace App\Controller;
 
 use App\Entity\Question;
 use App\Form\QuestionType;
+use App\Repository\CategorieMedicaleRepository;
 use App\Repository\QuestionRepository;
 use App\Entity\Reponse;
 use App\Form\ReponseType;
 use App\Repository\UserRepository;
+use phpDocumentor\Reflection\DocBlock\Serializer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,6 +21,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use App\Repository\ReponseRepository;
 use phpDocumentor\Reflection\DocBlock\Tags\Return_;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Normalizer;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 
 
@@ -207,6 +216,116 @@ class QuestionController extends AbstractController
 
         return $this->render('question/AfficherUneQuestion.html.twig', ['q' => $question,'isBad' => $reponse->getIsBad(),'test'=>$test,'nbIsBad'=>$nbIsBad,'description' => $description,'form'=>$form->createView()]);
 
+    }
+
+    /**
+     * @Route("/display-question",name="displayquestionJson")
+     */
+    public function afficherQuestionJ(QuestionRepository $repo, NormalizerInterface $serializer)
+    {
+        // /display-question
+        $questions=$repo->findAll();
+        $json=$serializer->normalize($questions,'json',['groups'=>['question']]);
+        return new Response(json_encode($json));
+       // dump($questions);
+        //die;
+
+    }
+    /**
+     * @Route("/add-question-json",name="AddQJson")
+     * @Method("POST")
+     */
+    public function  AjouterQuestionJ(Request $request, NormalizerInterface $serializer, UserRepository $repo1 , CategorieMedicaleRepository  $repoC)
+    {
+        // /add-question-json?titre="try"&symptomes="try"&userid=1&catMedId=1&ant=0&name=0&isTreated=0&poids=20&taille=90
+        $question=new Question();
+        $titre=$request->query->get("titre");
+        $symptomes=$request->query->get("symptomes");
+        $userid=$request->query->get("userid");
+        $catMedId=$request->query->get("catMedId");
+        //$isAnswered=$request->query->get("ans");
+        $isAntMed=$request->query->get("ant");
+        $isNameShown=$request->query->get("name");
+        $isTreated=$request->query->get("isTreated");
+        $poids=$request->query->get("poids");
+        $taille=$request->query->get("taille");
+        $question->setTitre($titre);
+        $question->setSymptomes($symptomes);
+        $question->setUser($repo1->find($userid));
+        $question->setCategorieMedicale($repoC->find($catMedId));
+        $question->setIsAnswered(0);
+        $question->setIsAntMed($isAntMed);
+        $question->setIsNameShown($isNameShown);
+        $question->setIsTreated($isTreated);
+        $question->setPoids($poids);
+        $question->setTaille($taille);
+        $em=$this->getDoctrine()->getManager();
+        $em->persist($question);
+        $em->flush();
+        $json=$serializer->normalize($question,'json',['groups'=>['question']]);
+        return new Response(json_encode($json));
+    }
+    /**
+     * @Route("/edit-question-json",name="ModifierQuestJson")
+     * @Method("PUT")
+     */
+
+    public function modifierQuestionJ(Request $request, NormalizerInterface $serializer)
+    {
+        // /edit-question-json?id=23&titre="modifier"&symptomes="modifierTry"&name=1&isTreated=1&ant=1&poids=65&taille=63
+        $em=$this->getDoctrine()->getManager();
+        $question=$this->getDoctrine()->getManager()->getRepository(Question::class)->find($request->get("id"));
+        $titre=$request->query->get("titre");
+        $symptomes=$request->query->get("symptomes");
+        $isNameShown=$request->query->get("name");
+        $isTreated=$request->query->get("isTreated");
+        $poids=$request->query->get("poids");
+        $taille=$request->query->get("taille");
+        $isAntMed=$request->query->get("ant");
+        $question->setTitre($titre);
+        $question->setSymptomes($symptomes);
+        $question->setIsAnswered(0);
+        $question->setIsAntMed($isAntMed);
+        $question->setIsNameShown($isNameShown);
+        $question->setIsTreated($isTreated);
+        $question->setPoids($poids);
+        $question->setTaille($taille);
+        $em->persist($question);
+        $em->flush();
+        $json=$serializer->normalize($question,'json',['groups'=>['question']]);
+        return new Response(json_encode($json));
+    }
+    /**
+     * @Route("/delete-question-json",name="DeleteQJson")
+     * @Method("DELETE")
+     */
+    public function supprimerQuestionJ(Request $request, NormalizerInterface $serializer)
+    {
+        // /delete-question-json?id=23
+        $id=$request->get("id");
+        $em=$this->getDoctrine()->getManager();
+        $question=$em->getRepository(Question::class)->find($id);
+        if($question!=null)
+        {
+            $em->remove($question);
+            $em->flush();
+            $json=$serializer->normalize("Question supprimee!");
+            return new Response(json_encode($json));
+        }
+    }
+    /**
+     * @Route("/afficher-une-question-json",name="uneQJson")
+     * @Method("GET")
+     */
+    public function afficherUneQuestionJ(Request $request,NormalizerInterface $normalizer)
+    {
+        // /afficher-une-question-json?id=19
+        $id=$request->get("id");
+        $em=$this->getDoctrine()->getManager();
+        $question=$em->getRepository(Question::class)->find($id);
+        $encoder= new JsonEncoder();
+        $json=$normalizer->normalize($question,'json',['groups'=>['question']]);
+        return new Response(json_encode($json));
     }
 
 

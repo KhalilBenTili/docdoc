@@ -10,6 +10,8 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 
 
 
@@ -23,16 +25,19 @@ class Article
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("article")
      */
     private $id;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups("article")
      */
     private $contenu;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("article")
      */
     private $titre;
 
@@ -43,6 +48,7 @@ class Article
      * @Vich\UploadableField(mapping="featured_images", fileNameProperty="imageName")
      *
      * @var File
+     *)
      */
     private $imageFile;
 
@@ -50,6 +56,7 @@ class Article
      * @ORM\Column(type="string")
      *
      * @var string|null
+     * @Groups("article")
      */
     private $imageName;
 
@@ -58,26 +65,31 @@ class Article
 
     /**
      * @ORM\ManyToOne(targetEntity=CategorieArticle::class, inversedBy="Article")
+     *
      */
     private $categorie;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups("article")
      */
     private $nblike;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups("article")
      */
     private $nbdislike;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("article")
      */
     private $created_at;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups("article")
      */
     private $nbvue=0;
 

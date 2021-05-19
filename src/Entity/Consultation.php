@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 
 /**
@@ -18,12 +19,14 @@ class Consultation
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("consultation")
      */
     private $id;
 
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups("consultation")
      */
     private $isAccepted;
 
@@ -32,17 +35,20 @@ class Consultation
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="consultations")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("consultation")
      */
     private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="consultationsM")
+     * @Groups("consultation")
      */
     private $userM;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      * @var string A "Y-m-d H:i:s" formatted value
+     * @Groups("consultation")
      */
 
     private $datehr;

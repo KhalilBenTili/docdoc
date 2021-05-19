@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ReponseRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 
 /**
@@ -16,28 +17,33 @@ class Reponse
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"reponse","user"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"reponse","user"})
      */
     private $description;
 
     /**
      * @ORM\ManyToOne(targetEntity=Question::class, inversedBy="reponses")
      * @ORM\JoinColumn(nullable=false)
+     *  @Groups({"reponse","user"})
      */
     private $question;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="reponses")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("reponse")
      */
     private $user;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"reponse","user"})
      */
     private $isBad;
 

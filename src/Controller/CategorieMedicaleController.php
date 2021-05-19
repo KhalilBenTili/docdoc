@@ -13,6 +13,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\SerializerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 class CategorieMedicaleController extends AbstractController
 {
@@ -22,8 +25,8 @@ class CategorieMedicaleController extends AbstractController
      * @Route ("/admin/liste-des-categories-medicales",name="afficherCategorieMedicale")
 
      */
-    public function Affichem(CategorieMedicaleRepository $repo){
-        // $repo=$this->getDoctrine()->getRepository(CategorieMedicale::class);
+    public function Affichem(CategorieMedicaleRepository $repo, SerializerInterface $serializer){
+        $repo=$this->getDoctrine()->getRepository(CategorieMedicale::class);
         $categorieMedicale1=$repo->findAll();
         return $this->render('categorie_medicale/categorieMedicale.html.twig',['categorieMedicale' => $categorieMedicale1]);
 
@@ -103,7 +106,68 @@ class CategorieMedicaleController extends AbstractController
         return $this->render('categorie_medicale/categorieMedicale.html.twig',['categorieMedicale' => $categorieMedicale1]);
 
     }*/
+    /**
+     * @Route("/display-categorie-med",name="displaycatJson")
+     */
+    public function afficherCatJ(CategorieMedicaleRepository $repo, NormalizerInterface $serializer)
+    {
+        $catMed=$repo->findAll();
+        $json=$serializer->normalize($catMed,'json',['groups'=>['catMed']]);
+        return new Response(json_encode($json));
 
+    }
+    /**
+     * @Route("/add-catMed-json",name="AddCatMedJson")
+     * @Method("POST")
+     */
+    public function  AjouterCatMedJ(Request $request, NormalizerInterface $serializer)
+    {
+        // /add-catMed-json?nom="tryJJJ"
+        $categorieMedicale=new CategorieMedicale();
+        $nom=$request->query->get("nom");
+        $categorieMedicale->setNom($nom);
+
+        $em=$this->getDoctrine()->getManager();
+        $em->persist($categorieMedicale);
+        $em->flush();
+        $json=$serializer->normalize($categorieMedicale,'json',['groups'=>['catMed']]);
+        return new Response(json_encode($json));
+    }
+    /**
+     * @Route("/edit-catMed-json",name="EditCatMedJson")
+     * @Method("PUT")
+     */
+
+    public function modifierQuestionJ(Request $request, NormalizerInterface $serializer)
+    {
+        // /edit-catMed-json?id=16&nom="modifier"
+        $em=$this->getDoctrine()->getManager();
+        $categorieMedicale=$this->getDoctrine()->getManager()->getRepository(CategorieMedicale::class)->find($request->get("id"));
+        $nom=$request->query->get("nom");
+        $categorieMedicale->setNom($nom);
+        $em->persist($categorieMedicale);
+        $em->flush();
+        $json=$serializer->normalize($categorieMedicale,'json',['groups'=>['catMed']]);
+        return new Response(json_encode($json));
+    }
+    /**
+     * @Route("/delete-catMed-json",name="DeletecatMedJson")
+     * @Method("DELETE")
+     */
+    public function supprimerQuestionJ(Request $request, NormalizerInterface $serializer)
+    {
+        // /delete-catMed-json?id=16
+        $id=$request->get("id");
+        $em=$this->getDoctrine()->getManager();
+        $catMed=$em->getRepository(CategorieMedicale::class)->find($id);
+        if($catMed!=null)
+        {
+            $em->remove($catMed);
+            $em->flush();
+            $json=$serializer->normalize("categorie medicale supprimee!");
+            return new Response(json_encode($json));
+        }
+    }
 
 
 

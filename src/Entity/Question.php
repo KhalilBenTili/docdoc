@@ -9,12 +9,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 
 
 /**
 
  * @ORM\Entity(repositoryClass=QuestionRepository::class)
- * @Vich\Uploadable
  */
 class Question
 {
@@ -22,6 +23,7 @@ class Question
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"question","reponse"})
      */
     private $id;
 
@@ -29,6 +31,7 @@ class Question
      * @ORM\Column(type="string", length=60)
      * @Assert\NotBlank
      *  @Assert\Length(min=3)
+     * @Groups("question")
      */
     private $titre;
 
@@ -36,6 +39,7 @@ class Question
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
      * @Assert\Length(min=10)
+     * @Groups("question")
      */
 
     private $symptomes;
@@ -44,6 +48,8 @@ class Question
      * @ORM\Column(type="integer", nullable=true)
      * @Assert\Positive
      * @Assert\Length(max=8)
+     * @Groups("catMed")
+     * @Groups("question")
      */
     private $taille;
 
@@ -51,43 +57,51 @@ class Question
      * @ORM\Column(type="integer", nullable=true)
      * @Assert\Positive
      * @Assert\Length(max=8)
+     * @Groups("question")
      */
     private $poids;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups("question")
      */
     private $isTreated;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups("question")
      */
     private $isAntMed;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups("question")
      */
     private $isNameShown;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups("question")
      */
     private $isAnswered;
 
     /**
      * @ORM\OneToMany(targetEntity=Reponse::class, mappedBy="question", cascade={"all"}, orphanRemoval=true )
+     * @Groups("question")
      */
     private $reponses;
 
     /**
      * @ORM\ManyToOne(targetEntity=CategorieMedicale::class, inversedBy="questions")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("question")
      */
     private $categorieMedicale;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="questions")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("question")
      */
     private $user;
 
