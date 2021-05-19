@@ -22,6 +22,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class PaiementController extends AbstractController
 {
@@ -64,6 +66,35 @@ class PaiementController extends AbstractController
     }
 
     /**
+     * @Route("/paiement/afficheMobile/",name="afficherPaiementMobile")
+     * @param NormalizerInterface $normalizer
+     * @return Response
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     */
+    public function affichePaiementMobile( NormalizerInterface $normalizer)
+    {
+        $repo = $this->getDoctrine()->getRepository(Paiement::class);
+        $paiements=$repo->findAll();
+        $json= $normalizer->normalize($paiements, 'json',['groups'=>'paiement']);
+        return new Response(json_encode($json));
+    }
+
+    /**
+     * @Route("/paiement/recherchePaiementMobile/{nom}",name="rechercheProduitMobile")
+     * @param $nom
+     * @param NormalizerInterface $normalizer
+     * @return Response
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     */
+    public function RechercheeMobile($nom, NormalizerInterface $normalizer)
+    {
+        $repo = $this->getDoctrine()->getRepository(Paiement::class);
+        $paiements=$repo->findBy(array('nom' => $nom));
+        $json= $normalizer->normalize($paiements, 'json',['groups'=>'paiement']);
+        return new Response(json_encode($json));
+    }
+
+    /**
      * @Route("/paiement/ajouter",name="AjouterPaiement")
      * @param Request $request
      * @param \Swift_Mailer $mailer
@@ -91,7 +122,6 @@ Merci pour votre confiance.');
             $mailer->send($message);
             if($paiement->getType() == "En ligne"){
                 $session->set('paiement', $paiement->getId());
-
                 return $this->redirectToRoute("paiement");
             }
             else
@@ -101,6 +131,49 @@ Merci pour votre confiance.');
                 ));
         }
         return $this->render("paiement/ajout.html.twig",['f'=>$form->createView()]);
+    }
+
+    /**
+     * @Route("/paiement/addJSON" , name="addPaiementJSON")
+     */
+    public function addPaiementJSON(Request $request, NormalizerInterface $normalizer, \Swift_Mailer $mailer){
+        $em = $this->getDoctrine()->getManager();
+        $paiement = new Paiement();
+        $paiement->setNom($request->get('nom'));
+        $paiement->setPrenom(($request->get('prenom')));
+        $paiement->setEmail($request->get('email'));
+        $paiement->setPrix($request->get('prix'));
+        $paiement->setAdresse($request->get('adresse'));
+        $paiement->setNumero($request->get('numero'));
+        $paiement->setStatus($request->get('status'));
+        $paiement->setType($request->get('type'));
+        $paiement->setUserid($request->get('userid'));
+
+        $message = (new \Swift_Message('NOUVEAU PAIEMENT'))
+            ->setFrom('docdocpidev@gmail.com')
+            ->setTo($request->get('email'))
+            ->setBody(
+                $this->renderView(
+                // templates/emails/registration.html.twig
+                    'emails/nouvPaiement.html.twig'), 'text/html')
+
+            // you can remove the following code if you don't define a text version for your emails
+            ->addPart(
+                $this->renderView(
+                // templates/emails/registration.txt.twig
+                    'emails/nouvprod.txt.twig'
+                ),
+                'text/plain'
+            )
+        ;
+
+        $mailer->send($message);
+
+        $em->persist($paiement);
+        $em->flush();
+        $jsonContent = $normalizer->normalize($paiement, 'json', ['groups'=>'paiement']);
+        return new Response(json_encode($jsonContent));
+
     }
 
     /**
@@ -115,8 +188,24 @@ Merci pour votre confiance.');
         $paiement = $repo->find($id);
         $em->remove($paiement);
         $em->flush();
-        return $this->redirectToRoute('afficherPaiement',array('userid'=>$session->get('id_user')));
+        return $this->redirectToRoute('afficherPaiement',array("userid"=>$session->get('id_user')));
     }
+
+    /**
+     * @Route("/deletePaiementMobile/{id}", name="deletePaiementMobile")
+     * @param NormalizerInterface $normalizer
+     * @return Response
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     */
+    public function deletePaiementMobile( $id, NormalizerInterface $normalizer){
+        $em = $this->getDoctrine()->getManager();
+        $paiement = $em->getRepository(Paiement::class)->find($id);
+        $em->remove($paiement);
+        $em->flush();
+        $jsonContent = $normalizer->normalize($paiement, 'json',['groups'=>'paiement']);
+        return new Response(json_encode($jsonContent));
+    }
+
 
     /**
      * @Route ("/success/{id}", name="success")
@@ -211,3 +300,4 @@ Merci pour votre confiance.');
         return new JsonResponse(['id' => $session->id]);
     }
 }
+

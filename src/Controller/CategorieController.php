@@ -97,4 +97,76 @@ class CategorieController extends AbstractController
         return new Response($retour);
     }
 
+
+    /**
+     * @param NormalizerInterface $normalizer
+     * @param CategorieRepository $repo
+     * @return Response
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     * @Route ("/afficherCMobile",name="afficherCMobile")
+     */
+    public function afficheMobile(NormalizerInterface $normalizer, CategorieRepository $repo){
+        $categories=$repo->findAll();
+        $jsonContent = $normalizer->normalize($categories,'json',['groups'=>'post:read']);
+        return new Response(json_encode($jsonContent));
+
+    }
+
+    /**
+     * @Route("/ajouterCMobile",name="ajouterCMobile")
+     * @param NormalizerInterface $normalizer
+     * @return Response
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     */
+    function ajouterCMobile(Request $request,NormalizerInterface $normalizer){
+
+        $em = $this->getDoctrine()->getManager();
+        $categorie = new Categorie();
+        $categorie->setTitre($request->get('titre'));
+        $categorie->setDescription(($request->get('description')));
+
+        $em->persist($categorie);
+        $em->flush();
+        $jsonContent = $normalizer->normalize($categorie, 'json', ['groups'=>'post:read']);
+        return new Response(json_encode($jsonContent));
+
+
+    }
+    /**
+     * @Route("/modifierCMobile",name="modifierCMobile")
+     * @param NormalizerInterface $normalizer
+     * @return Response
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     */
+    function modifierCMobile(Request $request,NormalizerInterface $normalizer,$id){
+
+        $em = $this->getDoctrine()->getManager();
+        $categorie = $em->getRepository(Categorie::class)->find($id);
+        $categorie->setTitre($request->get('titre'));
+        $categorie->setDescription(($request->get('description')));
+        $em->flush();
+        $jsonContent = $normalizer->normalize($categorie, 'json', ['groups'=>'post:read']);
+        return new Response("Modification reussie".json_encode($jsonContent));
+
+
+    }
+
+    /**
+     * @Route("/supprimerCMobile/{id}",name="supprimerCMobile")
+     * @param NormalizerInterface $normalizer
+     * @return Response
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     */
+    function supprimerCMobile(NormalizerInterface $normalizer,$id){
+
+        $em = $this->getDoctrine()->getManager();
+        $categorie = $em->getRepository(Categorie::class)->find($id);
+        $em->remove($categorie);
+        $em->flush();
+        $jsonContent = $normalizer->normalize($categorie, 'json', ['groups'=>'post:read']);
+        return new Response(json_encode($jsonContent));
+
+
+    }
+
 }
