@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class RegistrationController extends AbstractController
 {
@@ -49,45 +50,17 @@ class RegistrationController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
-            // do anything else you need here, like send an email
+
             if ($user->getType() == "patient") {
                 return $this->redirectToRoute("app_login");
             } elseif ($user->getType() == "medecin") {
                 return $this->redirectToRoute("accueil");
-                /*$form=$this->createForm(MedecinType::class,$user);
-                $form->add('confirmer',SubmitType::class);
-                $form->handleRequest($request);
-                if($form->isSubmitted() && $form->isValid()) {
-                    $entityManager = $this->getDoctrine()->getManager();
-                    $entityManager->flush();
-                    return $this->redirectToRoute('app_login');
-                }
-                return $this->render("registration/medecin.html.twig",['form'=>$form->createView()]);*/
+
             } elseif ($user->getType() == "pharmacien") {
                 return $this->redirectToRoute("accueil");
-                /*$form=$this->createForm(PharamacienType::class,$user);
-                $form->add('confirmer',SubmitType::class);
-                $form->handleRequest($request);
-                if($form->isSubmitted() && $form->isValid()) {
-                    $entityManager = $this->getDoctrine()->getManager();
-                    $entityManager->flush();
-                    return $this->redirectToRoute('app_login');
-                }
-                return $this->render("registration/pharmacien.html.twig",['form'=>$form->createView()]);*/
             } else {
                 return $this->redirectToRoute("accueil");
-                /*$form=$this->createForm(DelegueType::class,$user);
-                $form->add('confirmer',SubmitType::class);
-                $form->handleRequest($request);
-                if($form->isSubmitted() && $form->isValid()) {
-                    $entityManager = $this->getDoctrine()->getManager();
-                    $entityManager->flush();
-                    return $this->redirectToRoute('app_login');
-                }
-                return $this->render("registration/delegue.html.twig",['form'=>$form->createView()]);*/
             }
-
-
             return $guardHandler->authenticateUserAndHandleSuccess(
                 $user,
                 $request,
@@ -100,6 +73,92 @@ class RegistrationController extends AbstractController
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/addUserJson/new",name="addUser")
+     */
+    public function addUserJSON(Request $request,NormalizerInterface $normalizer,UserPasswordEncoderInterface $passwordEncoder, \Swift_Mailer $mailer){
+        $em = $this->getDoctrine()->getManager();
+        $user= new User();
+        $user->setNom($request->get('nom'));
+        $user->setPrenom($request->get('prenom'));
+        $email=$request->query->get('email');
+        if(!filter_var($email,FILTER_VALIDATE_EMAIL)){
+            return new Response("email invalid");
+        }
+        $user->setEmail($email);
+        $password = $request->query->get('password');
+        $user->setPassword(
+            $passwordEncoder->encodePassword(
+                $user,
+                $password
+            )
+        );
+        // $user->setDnaissance(new \DateTime($request->get('dnaissance')));
+        $user->setAdresse($request->get('adresse'));
+        $user->setNumtel($request->get('numtel'));
+        $user->setType($request->get('type'));
+        $message = (new \Swift_Message('BIENVENU !'))
+            ->setFrom('docdocpidev@gmail.com')
+            ->setTo($request->get('email'))
+            ->setBody(
+                $this->renderView(
+                // templates/emails/registration.html.twig
+                    'emails/NVUSER.html.twig'), 'text/html')
+
+            // you can remove the following code if you don't define a text version for your emails
+            ->addPart(
+                $this->renderView(
+                // templates/emails/registration.txt.twig
+                    'emails/nouvprod.txt.twig'
+                ),
+                'text/plain'
+            )
+        ;
+
+        $mailer->send($message);
+
+        $em->persist($user);
+        $em->flush();
+//        $message = (new \Swift_Message('BIENVENU !'))
+//            ->setFrom('docdocpidev@gmail.com','DocDoc')
+//            ->setTo($user->getEmail())
+//            ->setBody('Bonjour Madame/Monsieur, c est avec plaisir qu on vous écrit pour vous remercier sincérement d avoir choisi de faire confiance à DOCDOC.');
+//        $mailer->send($message);
+        $jsonContent = $normalizer->normalize($user,'json',['groups'=>'post:read']);
+        return new Response(json_encode($jsonContent));
+    }
+
+    /**
+     * @param NormalizerInterface $normalizer
+     * @param UserRepository $repo
+     * @return Response
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     * @Route ("/afficheusermob/",name="affuMobile")
+     */
+    public function afficheUser(NormalizerInterface $normalizer, UserRepository $repo){
+        $user=$repo->findBy(array('type'=>'medecin'));
+
+
+        $jsonContent = $normalizer->normalize($user, 'json', ['groups' => 'post:read']);
+
+        return new Response(json_encode($jsonContent));
+
+    }
+
+    /**
+     * @param NormalizerInterface $normalizer
+     * @param UserRepository $rep
+     * @return Response
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     * @Route("/affpharmobile/",name="affphmob")
+     */
+    public function affpharmacien(NormalizerInterface $normalizer,UserRepository $rep){
+        $user=$rep->findBy(array('type'=>'pharmacien'));
+        $jsonContent = $normalizer->normalize($user, 'json', ['groups' => 'post:read']);
+
+        return new Response(json_encode($jsonContent));
     }
 
     /**
@@ -125,32 +184,32 @@ class RegistrationController extends AbstractController
     function UpdateUser(UserRepository $repo,$id,Request $req){
         $user=$repo->find($id);
         if ($user->getType() == "medecin") {
-        $form=$this->createForm(MedecinType::class,$user);
-        $form->add('modifier',SubmitType::class);
-        $form->handleRequest($req);
-        if($form->isSubmitted() ){
-            $em=$this->getDoctrine()->getManager();
-            $em->flush();
-            return $this->redirectToRoute('userinterface');
-        }
-        return $this->render("registration/medecin.html.twig", ['form' => $form->createView()]);}
+            $form=$this->createForm(MedecinType::class,$user);
+            $form->add('modifier',SubmitType::class);
+            $form->handleRequest($req);
+            if($form->isSubmitted() ){
+                $em=$this->getDoctrine()->getManager();
+                $em->flush();
+                return $this->redirectToRoute('userinterface');
+            }
+            return $this->render("registration/medecin.html.twig", ['form' => $form->createView()]);}
         elseif ($user->getType() == "patient") {
-        $form = $this->createForm(PatientType::class, $user);
-        /*$form->add('confirmer', SubmitType::class);*/
-        $form->handleRequest($req);
-        if ($form->isSubmitted()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->flush();
+            $form = $this->createForm(PatientType::class, $user);
+            /*$form->add('confirmer', SubmitType::class);*/
+            $form->handleRequest($req);
+            if ($form->isSubmitted()) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->flush();
 
-            return $this->redirectToRoute('userinterface');
+                return $this->redirectToRoute('userinterface');
 
+            }
+            return $this->render("registration/Patient.html.twig", ['form' => $form->createView()]);
         }
-        return $this->render("registration/Patient.html.twig", ['form' => $form->createView()]);
-    }
         elseif ($user->getType() == "pharmacien") {
 
             $form = $this->createForm(PharamacienType::class, $user);
-         /*   $form->add('confirmer', SubmitType::class);*/
+            /*   $form->add('confirmer', SubmitType::class);*/
             $form->handleRequest($req);
             if ($form->isSubmitted() ) {
                 $entityManager = $this->getDoctrine()->getManager();
@@ -161,7 +220,7 @@ class RegistrationController extends AbstractController
         }
         elseif ($user->getType() == "delegue"){
             $form=$this->createForm(DelegueType::class,$user);
-          /*  $form->add('confirmer',SubmitType::class);*/
+            /*  $form->add('confirmer',SubmitType::class);*/
             $form->handleRequest($req);
             if($form->isSubmitted() ) {
                 $entityManager = $this->getDoctrine()->getManager();

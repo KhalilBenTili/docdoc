@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Users;
+use App\Entity\User;
 use App\Form\ContactType;
 use App\Form\EditUserType;
 use App\Repository\ReclamationRepository;
@@ -17,7 +17,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 class UserController extends AbstractController
 {
     /**
@@ -345,21 +346,26 @@ class UserController extends AbstractController
             ['user'=>$user]);
     }
 
-/**
-     * @param UserRepository $rep
-     * @param $id
-     * @param UserRepository $rep1
-     * @return Response
-     *@Route("/loginmobile/{email}/{password}", name="logiiin")
+    /**
+     * @Route("/user/signin", name="moblogin")
      */
-    function AfficheLogin(UserRepository $rep,$email,$password,NormalizerInterface $normalizer){
-        $user=$rep->findOneBy(array('email'=>$email));
+    public function signinAction(Request $request,NormalizerInterface $normalizer){
+        $email = $request->query->get("email");
+        $password = $request->query->get("password");
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository(User::class)->findOneBy(['email'=>$email]);
         if($user){
-            $jsonContent = $normalizer->normalize($user, 'json', ['groups' => 'post:read']);
-            return new Response(json_encode($jsonContent));
-        }else{
+            if(password_verify($password,$user->getPassword())){
+                $formatted = $normalizer->normalize($user,'json', ['groups' => 'post:read']);
+                return new JsonResponse($formatted);}
+            else{
+                return new Response("notfound");
+            }
 
-            return new Response(json_encode('false'));
+
+        }
+        else {
+            return new Response("failed");
         }
     }
 
