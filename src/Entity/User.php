@@ -23,7 +23,7 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"question","reponse","consultation"})
+     * @Groups({"question","reponse","consultation","post:read"})
      */
     private $id;
 
@@ -32,26 +32,28 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\Email(message = "L'e-mail '{{ value }}'
     N'est pas valide.")
-     *     @Groups({"question","reponse","consultation"})
+     *     @Groups({"question","reponse","consultation","post:read"})
      */
 
     private $email;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups("post:read")
      */
     private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Groups("post:read")
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=30)
      *@Assert\NotBlank(message="ce champ est requis")
-     * @Groups({"question","reponse","consultation"})
+     * @Groups({"question","reponse","consultation","post:read"})
      */
 
     private $nom;
@@ -59,19 +61,20 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=30)
      *@Assert\NotBlank(message="ce champ est requis")
-     * @Groups({"question","reponse","consultation"})
+     * @Groups({"question","reponse","consultation","post:read"})
      */
 
     private $prenom;
 
     /**
      * @ORM\Column(type="date")
+     * @Groups("post:read")
      */
     private $dnaissance;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"question","reponse","consultation"})
+     * @Groups({"question","reponse","consultation","post:read"})
      */
 
     private $type;
@@ -82,7 +85,7 @@ class User implements UserInterface
      *@Assert\NotBlank(message="ce champ est requis")
      *@Assert\Length(min = "8",max = "8",minMessage="Votre Numéro doit contenir 8 chiffres ."))
      * @Assert\Regex(pattern="/^[0-9]*$/", message="Doit contenir des chiffres")
-     * @Groups({"question","reponse","consultation"})
+     * @Groups({"question","reponse","consultation","post:read"})
      */
 
     private $numtel;
@@ -91,43 +94,50 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      *@Assert\Length(min = "8",max = "8",minMessage="Votre CIN doit contenir 8 chiffres."))
      * @Assert\Regex(pattern="/^[0-9]*$/", message="Doit contenir des chiffres")
-     * @Groups({"question","reponse","consultation"})
+     * @Groups({"question","reponse","consultation","post:read"})
      */
     private $cin;
 
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("post:read")
      */
     private $societe;
 
     /**
      * @ORM\Column(type="string", length=30, nullable=true)
+     * @Groups("post:read")
      */
     private $matricule;
 
     /**
      * @ORM\Column(type="string", length=30, nullable=true)
+     * @Groups("post:read")
      */
     private $cnam;
 
     /**
      * @ORM\Column(type="string", length=30, nullable=true)
+     * @Groups("post:read")
      */
     private $cnss;
 
     /**
      * @ORM\Column(type="string", length=30, nullable=true)
+     * @Groups("post:read")
      */
     private $specialite;
 
     /**
      * @ORM\Column(type="date", nullable=true)
+     * @Groups("post:read")
      */
     private $disponabilite;
 
     /**
      * @ORM\Column(type="string", nullable=true , length=30)
+     * @Groups("post:read")
      */
     private $pharmacie;
 
@@ -135,12 +145,14 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=30)
+     * @Groups("post:read")
      */
     private $adresse;
 
 
     /**
      * @ORM\OneToMany(targetEntity=Reclamation::class, mappedBy="user")
+     *
      */
     private $reclamations;
 
@@ -148,6 +160,7 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255, nullable=true)
 
      * @Assert\File(mimeTypes={"image/jpeg"})
+     * @Groups("post:read")
      */
     private $image;
     /**
@@ -170,7 +183,7 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity=Consultation::class, mappedBy="userM" , cascade={"all"}, orphanRemoval=true)
      */
     private $consultationsM;
-     /**
+    /**
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $isBlocked;
@@ -180,7 +193,7 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity=Commentaires::class, mappedBy="User")
      */
     private $commentaires;
-     /**
+    /**
      * @ORM\OneToMany(targetEntity=Rate::class, mappedBy="user")
      */
     private $rates;
@@ -646,12 +659,12 @@ class User implements UserInterface
         if (!$this->commentaires->contains($commentaire)) {
             $this->commentaires[] = $commentaire;
             $commentaire->setUser($this);
-            }
+        }
 
         return $this;
     }
-          
-     /**    
+
+    /**
      * @return Collection|Rate[]
      */
     public function getRates(): Collection
@@ -675,7 +688,7 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($commentaire->getUser() === $this) {
                 $commentaire->setUser(null);
-                     }
+            }
         }
 
         return $this;

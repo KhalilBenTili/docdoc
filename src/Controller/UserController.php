@@ -345,6 +345,37 @@ class UserController extends AbstractController
             ['user'=>$user]);
     }
 
+/**
+     * @param UserRepository $rep
+     * @param $id
+     * @param UserRepository $rep1
+     * @return Response
+     *@Route("/loginmobile/{email}/{password}", name="logiiin")
+     */
+    function AfficheLogin(UserRepository $rep,$email,$password,NormalizerInterface $normalizer){
+        $user=$rep->findOneBy(array('email'=>$email));
+        if($user){
+            $jsonContent = $normalizer->normalize($user, 'json', ['groups' => 'post:read']);
+            return new Response(json_encode($jsonContent));
+        }else{
 
+            return new Response(json_encode('false'));
+        }
+    }
+
+    /**
+     * @Route("/user/rechercheNomPaiementMobile/{nom}",name="rechercheParNomMobile")
+     * @param $nom
+     * @param NormalizerInterface $normalizer
+     * @return Response
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     */
+    public function RechercheeMobile($nom, NormalizerInterface $normalizer)
+    {
+        $repo = $this->getDoctrine()->getRepository(User::class);
+        $users=$repo->findBy(array('nom' => $nom));
+        $json= $normalizer->normalize($users, 'json',['groups' => 'post:read']);
+        return new Response(json_encode($json));
+    }
 
 }
